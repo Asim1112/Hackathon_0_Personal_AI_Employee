@@ -1,0 +1,17 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Google OAuth credentials — never commit these
+credentials.json
+token.json
+
+# Watcher runtime state
+.gmail_watcher_state.json

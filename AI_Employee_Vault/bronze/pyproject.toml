@@ -1,0 +1,20 @@
+[project]
+name = "bronze"
+version = "0.1.0"
+description = "Bronze-tier Personal AI Employee — Hackathon"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    # Gmail Watcher — Google API client stack
+    "google-auth>=2.29.0",
+    "google-auth-oauthlib>=1.2.0",
+    "google-auth-httplib2>=0.2.0",
+    "google-api-python-client>=2.126.0",
+    # File System Watcher (used by filesystem_watcher.py)
+    "watchdog>=4.0.0",
+]
+
+[tool.uv]
+# This project is a collection of scripts, not an installable Python package.
+# Disable editable wheel building so `uv sync` only installs dependencies.
+package = false
