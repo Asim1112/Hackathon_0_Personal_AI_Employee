@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Environment
+.env
+.env.*
+
+# OAuth & Tokens
+credentials.json
+token.json
+
+# Session Files
+*.session
+*.json
+whatsapp_session/
+.linkedin_session.json
+
+# Claude
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
