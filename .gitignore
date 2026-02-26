@@ -1,24 +1,33 @@
 # Python
 __pycache__/
-*.pyc
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info/
 .venv/
 
-# Environment
-.env
-.env.*
+# Credentials and secrets — NEVER commit these
+credentials.json        # Google OAuth client secret
+token.json              # Google OAuth access token
+.env                    # Environment variables (SMTP, LinkedIn credentials)
+.linkedin_session.json  # Playwright saved LinkedIn session (auth cookies)
+whatsapp_session/       # Playwright persistent context for WhatsApp Web (auth cookies)
 
-# OAuth & Tokens
-credentials.json
-token.json
+# Watcher runtime state
+.gmail_watcher_state.json
+.linkedin_watcher_state.json
+.whatsapp_watcher_state.json
+.ralph_state.json
 
-# Session Files
-*.session
-*.json
-whatsapp_session/
-.linkedin_session.json
+# Node.js
+node_modules/
+mcp_servers/*/node_modules/
+mcp_servers/*/.env      # MCP server env files with credentials
+mcp_servers/*/mcp.json  # MCP server config files (may contain credentials)
 
-# Claude
-.claude/
+# Playwright browser binaries
+playwright-browsers/
 
 # OS
 .DS_Store

@@ -1,0 +1,19 @@
+{
+  "name": "ai-employee-email-mcp",
+  "version": "2.0.0",
+  "description": "Email MCP server for Silver-tier AI Employee — watches /Approved, sends via Gmail SMTP, logs to /Done",
+  "main": "index.js",
+  "scripts": {
+    "start":  "node index.js",
+    "dev":    "node --watch index.js",
+    "dryrun": "DRY_RUN=true node index.js"
+  },
+  "keywords": ["mcp", "email", "nodemailer", "ai-employee", "hitl"],
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "nodemailer": "^8.0.1",
+    "chokidar":   "^3.6.0",
+    "dotenv":     "^16.4.5"
+  }
+}
