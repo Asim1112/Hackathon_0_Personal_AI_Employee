@@ -1,0 +1,10 @@
+{
+  "smtp_host":   "smtp.gmail.com",
+  "smtp_port":   587,
+  "smtp_secure": false,
+  "smtp_user":   "you@gmail.com",
+  "smtp_pass":   "your-gmail-app-password",
+  "from":        "you@gmail.com",
+  "vault_path":  "../..",
+  "dry_run":     false
+}

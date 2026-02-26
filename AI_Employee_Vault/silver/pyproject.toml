@@ -1,0 +1,26 @@
+[project]
+name = "silver"
+version = "2.0.0"
+description = "Silver-tier Personal AI Employee — Hackathon"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    # Gmail Watcher — Google API client stack
+    "google-auth>=2.29.0",
+    "google-auth-oauthlib>=1.2.0",
+    "google-auth-httplib2>=0.2.0",
+    "google-api-python-client>=2.126.0",
+    # LinkedIn Watcher — Playwright browser automation
+    "playwright>=1.49.0",
+    # Filesystem Watcher
+    "watchdog>=4.0.0",
+    # Scheduler — daily 8 AM cron-like trigger
+    "schedule>=1.2.0",
+    # Environment variable loading (.env files)
+    "python-dotenv>=1.0.0",
+]
+
+[tool.uv]
+# This project is a collection of scripts, not an installable Python package.
+# Disable editable wheel building so `uv sync` only installs dependencies.
+package = false
