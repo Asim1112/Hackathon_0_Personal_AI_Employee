@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -NonInteractive -Command \"$root = git rev-parse --show-toplevel 2>$null; if ($root) { Set-Location $root }; uv run python .claude/hooks/stop_hook.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

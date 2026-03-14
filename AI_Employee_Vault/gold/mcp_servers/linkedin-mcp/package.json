@@ -1,0 +1,21 @@
+{
+  "name": "ai-employee-linkedin-mcp",
+  "version": "1.0.0",
+  "description": "LinkedIn MCP server for Silver-tier AI Employee — watches /Approved and posts via Playwright",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "install-browser": "npx playwright install chromium"
+  },
+  "keywords": ["mcp", "linkedin", "playwright", "ai-employee"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "playwright": "^1.49.0",
+    "dotenv": "^16.4.5",
+    "winston": "^3.11.0",
+    "chokidar": "^3.6.0"
+  }
+}

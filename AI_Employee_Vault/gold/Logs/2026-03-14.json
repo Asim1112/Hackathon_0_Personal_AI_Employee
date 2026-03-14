@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2026-03-14T10:30:01Z",
+    "action_type": "email_triage",
+    "actor": "claude_code",
+    "target": "EMAIL_2026-03-14_Client_Status_Update.md",
+    "skill_used": "SKILL_Gmail_Triage",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "John Smith (john.client@example.com) — new contact, not in Key Contacts. Project status enquiry. Draft reply written to Inbox/DRAFT_REPLY_Project_Status_Update_2026-03-14.md. Escalation written to Pending_Approval/NEW_CONTACT_REVIEW_John_Smith_Email_2026-03-14.md. SLA borderline (3 days old, Tier 4 = 72h). Priority: high."
+  },
+  {
+    "timestamp": "2026-03-14T10:30:02Z",
+    "action_type": "odoo_draft_created",
+    "actor": "claude_code",
+    "target": "ODOO_2026-03-14_Invoice_Request.md",
+    "skill_used": "SKILL_Odoo_Accounting",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Invoice draft created for Demo Client Ltd — AI Consulting 10hrs × £150/hr = £1,500 net / £1,800 incl. 20% VAT, ref PROJECT-001. Rate from Business_Goals.md Service Rate Card. Written to Pending_Approval/ODOO_REVIEW_Invoice_Demo_Client_Ltd_2026-03-14.md. Amount exceeds £50 HITL threshold."
+  },
+  {
+    "timestamp": "2026-03-14T10:30:03Z",
+    "action_type": "twitter_draft_created",
+    "actor": "claude_code",
+    "target": "TWITTER_2026-03-14_mention_demo.md",
+    "skill_used": "SKILL_Twitter_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Positive mention from @techfounder (tweet_id: 1234567890) — asking who is building in AI agents space. Classified as engagement opportunity. Reply tweet drafted (190 chars, reply_to_tweet_id: 1234567890) — written to Pending_Approval/TWITTER_DRAFT_AI_Agents_Reply_techfounder_2026-03-14.md."
+  }
+]

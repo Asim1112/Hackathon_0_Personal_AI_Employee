@@ -1,0 +1,50 @@
+services:
+
+  # ── PostgreSQL 16 ─────────────────────────────────────────────────────────
+  db:
+    image: postgres:16
+    container_name: odoo_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres          # postgres manages all Odoo DBs under this user
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Odoo 18 Community ─────────────────────────────────────────────────────
+  # Note: Use image: odoo:19 once the Odoo 19 Docker image is available.
+  # Odoo 18 and 19 use the same JSON-RPC API documented at:
+  # https://www.odoo.com/documentation/18.0/developer/reference/external_api.html
+  odoo:
+    image: odoo:18
+    container_name: odoo_app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8069:8069"        # Main web interface + JSON-RPC
+      - "8072:8072"        # Long-polling (optional, for live chat)
+    environment:
+      HOST: db
+      PORT: 5432
+      USER: odoo
+      PASSWORD: odoo
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+    command: odoo --config /etc/odoo/odoo.conf
+
+# ── Named Volumes ─────────────────────────────────────────────────────────────
+volumes:
+  odoo-db-data:
+    name: odoo_postgres_data
+  odoo-web-data:
+    name: odoo_web_data
