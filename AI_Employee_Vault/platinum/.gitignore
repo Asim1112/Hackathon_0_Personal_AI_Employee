@@ -1,0 +1,37 @@
+# === SECRETS — NEVER SYNC TO CLOUD ===
+.env
+credentials.json
+token.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# === SESSION FILES (stay on each machine) ===
+whatsapp_session/
+.linkedin_session.json
+.gmail_watcher_state.json
+.twitter_watcher_state.json
+.facebook_watcher_state.json
+.linkedin_watcher_state.json
+
+# === PYTHON ===
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+uv.lock
+
+# === NODE ===
+node_modules/
+npm-debug.log
+
+# === OS ===
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# === EDITOR ===
+.vscode/
+*.swp
+*~

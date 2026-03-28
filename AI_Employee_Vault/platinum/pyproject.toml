@@ -1,0 +1,30 @@
+[project]
+name = "platinum"
+version = "1.0.0"
+description = "Platinum-tier Personal AI Employee — Cloud + Local (Always-On)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    # Gmail Watcher — Google API client stack
+    "google-auth>=2.29.0",
+    "google-auth-oauthlib>=1.2.0",
+    "google-auth-httplib2>=0.2.0",
+    "google-api-python-client>=2.126.0",
+    # LinkedIn + Facebook Watchers — Playwright browser automation
+    "playwright>=1.49.0",
+    # Scheduler — scheduled Claude cycles
+    "schedule>=1.2.0",
+    # Environment variable loading
+    "python-dotenv>=1.0.0",
+    # Twitter API v2
+    "tweepy>=4.14.0",
+    # HTTP client for Meta Graph API
+    "httpx>=0.27.0",
+    # Retry logic
+    "tenacity>=8.2.0",
+    # Filesystem watching (local_orchestrator Approved/ watcher)
+    "watchdog>=4.0.0",
+]
+
+[tool.uv]
+package = false
