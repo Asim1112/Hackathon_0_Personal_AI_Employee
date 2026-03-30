@@ -7,7 +7,7 @@ message_id_header: "<0100019d39873eae-7981d180-fb9e-49f2-a25b-32743492ab13-00000
 from: "Amazon Web Services <no-reply@amazonaws.com>"
 subject: "Your Request For Accessing AWS Resources Has Been Validated"
 date_sent: "Sun, 29 Mar 2026 12:17:37 +0000"
-received: "2026-03-30T02:20:10.411182+00:00"
+received: "2026-03-30T02:13:01.452581+00:00"
 priority: high
 status: pending
 source: gmail
@@ -23,12 +23,12 @@ source: gmail
 
 ## Email Body
 
-Dear AWS Customer, 
- 
-You recently requested Amazon Elastic Compute Cloud (EC2) in US East (N. Virginia) Region(s) that required additional validation. Your request has now been validated. If you did not make this request or still experiencing difficulty, then contact us through the Support Center: ( please click here ) 
- 
-Sincerely, 
-Amazon Web Services 
+Dear AWS Customer, 
+ 
+You recently requested Amazon Elastic Compute Cloud (EC2) in US East (N. Virginia) Region(s) that required additional validation. Your request has now been validated. If you did not make this request or still experiencing difficulty, then contact us through the Support Center: ( please click here ) 
+ 
+Sincerely, 
+Amazon Web Services 
 This message was produced and distributed by Amazon Web Services, Inc. and affiliates, 410 Terry Ave. North, Seattle, WA 98109-5210.
 
 ---
@@ -50,4 +50,4 @@ This message was produced and distributed by Amazon Web Services, Inc. and affil
 
 ---
 
-*Captured by GmailWatcher (Platinum/Cloud) at 2026-03-30T02:20:10.411182+00:00*
+*Captured by GmailWatcher (Platinum/Cloud) at 2026-03-30T02:13:01.452581+00:00*

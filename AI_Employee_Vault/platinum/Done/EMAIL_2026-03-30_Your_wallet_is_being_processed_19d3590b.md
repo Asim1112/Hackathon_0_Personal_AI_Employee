@@ -7,7 +7,7 @@ message_id_header: "<2134910430.4795095.1774720169923@np-pri-notification-alma-0
 from: "NayaPay <service@nayapay.com>"
 subject: "Your wallet is being processed"
 date_sent: "Sat, 28 Mar 2026 22:49:29 +0500 (PKT)"
-received: "2026-03-30T02:20:10.738415+00:00"
+received: "2026-03-30T02:13:02.466549+00:00"
 priority: high
 status: pending
 source: gmail
@@ -44,4 +44,4 @@ You have submitted a request to create your NayaPay wallet and it will be proces
 
 ---
 
-*Captured by GmailWatcher (Platinum/Cloud) at 2026-03-30T02:20:10.738415+00:00*
+*Captured by GmailWatcher (Platinum/Cloud) at 2026-03-30T02:13:02.466549+00:00*
