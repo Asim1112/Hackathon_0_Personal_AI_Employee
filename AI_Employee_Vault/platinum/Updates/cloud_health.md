@@ -1,13 +1,13 @@
 ---
 agent: cloud_agent
-last_check: 2026-03-30T02:33:21.647028+00:00
+last_check: 2026-03-30T02:38:22.427409+00:00
 pm2_status: not_found
 pm2_restarts: 0
 disk_free_mb: 14453
 overall: degraded
 ---
 
-# Cloud Agent Health — 2026-03-30T02:33:21.647028+00:00
+# Cloud Agent Health — 2026-03-30T02:38:22.427409+00:00
 
 | Check | Status |
 |---|---|
