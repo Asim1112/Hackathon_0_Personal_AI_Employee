@@ -1,0 +1,192 @@
+[
+  {
+    "timestamp": "2026-03-25T08:00:00Z",
+    "action_type": "daily_briefing",
+    "actor": "claude_code",
+    "target": "Inbox/BRIEFING_2026-03-25.md",
+    "skill_used": "SKILL_Daily_Briefing",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Morning briefing generated. 5 items in queue (1 urgent: overdue invoice INV-2026-008, 18 days overdue). Urgency: HIGH_ALERT."
+  },
+  {
+    "timestamp": "2026-03-25T08:05:00Z",
+    "action_type": "email_triage",
+    "actor": "claude_code",
+    "target": "EMAIL_2026-03-25_Project_Status_Enquiry_demo01.md",
+    "skill_used": "SKILL_Gmail_Triage",
+    "approval_status": "pending",
+    "result": "success",
+    "notes": "Sarah Johnson (TechCorp Ltd, existing contact) — project status for Friday board meeting. Draft reply written to Inbox/DRAFT_REPLY_Project_Status_Update_2026-03-25.md. Contains [PLACEHOLDER] for delivery date. Awaiting approval via email-mcp."
+  },
+  {
+    "timestamp": "2026-03-25T08:15:00Z",
+    "action_type": "approval_requested",
+    "actor": "claude_code",
+    "target": "NEW_CONTACT_REVIEW_James_Carter_LinkedIn_2026-03-25.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "James Carter, CEO Nexus Ventures — new contact, LinkedIn DM, fintech AI consulting enquiry, call request this week. HITL triggered: new contact rule. Review written to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-25T08:20:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "LINKEDIN_DRAFT_AI_Consulting_Fintech_2026-03-25.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "LinkedIn thought leadership post drafted — fintech AI automation, triggered by inbound consulting enquiry. 1241 chars. Written to Pending_Approval/. Recommended posting: Tuesday or Wednesday 09:00-11:00 BST."
+  },
+  {
+    "timestamp": "2026-03-25T08:30:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "TWITTER_DRAFT_Gold_Tier_Launch_2026-03-25.md",
+    "skill_used": "SKILL_Twitter_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Twitter post drafted — Gold Tier AI Employee launch announcement. Action: post_tweet (standalone, NOT reply). 214 chars / 280 limit. Written to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-25T08:45:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "FACEBOOK_DRAFT_Gold_Tier_Launch_2026-03-25.md",
+    "skill_used": "SKILL_Facebook_Instagram",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Facebook Business Page post drafted — Gold Tier launch announcement. Action: post_facebook. 3 paragraphs, professional tone. Written to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-25T08:50:00Z",
+    "action_type": "odoo_query",
+    "actor": "claude_code",
+    "target": "ODOO_REVIEW_Invoice_Bright_Solutions_2026-03-25.md",
+    "skill_used": "SKILL_Odoo_Accounting",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Overdue invoice INV-2026-008 — Bright Solutions Ltd, £1,200.00, 18 days overdue. Odoo create_invoice action written to Pending_Approval/. Second consecutive day flagged. Urgent: AR target <£2,000, this invoice = 60% of threshold."
+  },
+  {
+    "timestamp": "2026-03-25T08:52:00Z",
+    "action_type": "email_triage",
+    "actor": "claude_code",
+    "target": "DRAFT_REPLY_Overdue_Invoice_Bright_Solutions_2026-03-25.md",
+    "skill_used": "SKILL_Odoo_Accounting",
+    "approval_status": "pending",
+    "result": "success",
+    "notes": "Payment chase email drafted for overdue INV-2026-008. Written to Inbox/. Recipient email inferred — must be verified before approving. Awaiting approval via email-mcp."
+  },
+  {
+    "timestamp": "2026-03-25T08:55:00Z",
+    "action_type": "process_needs_action",
+    "actor": "claude_code",
+    "target": "Needs_Action/ (all 5 files)",
+    "skill_used": "SKILL_Process_Needs_Action",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "All 5 Needs_Action files updated (status: processed, processed_at added) and moved to Done/. Queue cleared."
+  },
+  {
+    "timestamp": "2026-03-25T09:00:00Z",
+    "action_type": "dashboard_update",
+    "actor": "claude_code",
+    "target": "Dashboard.md",
+    "skill_used": "SKILL_Update_Dashboard",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Dashboard.md refreshed: 5 items processed, 5 to Pending_Approval/, 2 to Inbox/ (email draft + payment chase), 1 briefing to Inbox/. Queue clear."
+  },
+  {
+    "timestamp": "2026-03-25T10:05:00Z",
+    "action_type": "email_triage",
+    "actor": "claude_code",
+    "target": "EMAIL_2026-03-25_AI_Project_Milestone_demo01.md",
+    "skill_used": "SKILL_Gmail_Triage",
+    "approval_status": "pending",
+    "result": "success",
+    "notes": "Sarah Johnson (TechCorp Ltd, existing client) — Q2 AI Integration Project milestone update for board review. 3 project status points + Tuesday demo call confirmation requested. Draft reply written to Inbox/DRAFT_REPLY_Q2_AI_Project_Milestone_2026-03-25.md. Contains 2x [PLACEHOLDER] items to fill before approving. No new-contact HITL required."
+  },
+  {
+    "timestamp": "2026-03-25T10:10:00Z",
+    "action_type": "approval_requested",
+    "actor": "claude_code",
+    "target": "NEW_CONTACT_REVIEW_Marcus_Webb_LinkedIn_2026-03-25.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Marcus Webb, COO Apex Advisory Partners — new contact, LinkedIn DM, enterprise AI automation enquiry (45-person firm, 3 pain points: email triage, invoice management, content drafting). HITL triggered: new contact rule. New contact review written to Pending_Approval/. Tier 3 prospect — high estimated value."
+  },
+  {
+    "timestamp": "2026-03-25T10:15:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "LINKEDIN_DRAFT_Enterprise_Automation_Consulting_2026-03-25.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "LinkedIn thought leadership post drafted — enterprise AI automation for professional services, triggered by Marcus Webb inbound enquiry. ~195 words, 5 hashtags. Recommended: Wednesday or Thursday 09:00–11:00 BST. Written to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-25T10:20:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "TWITTER_DRAFT_AI_Employee_Capabilities_2026-03-25.md",
+    "skill_used": "SKILL_Twitter_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Twitter post drafted — AI Employee 5-channel monitoring capabilities. Action: post_tweet (standalone). 247 chars / 280 limit. Target: business owners, ops leads, fintech professionals. Written to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-25T10:25:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "FACEBOOK_DRAFT_AI_Employee_Professional_Services_2026-03-25.md",
+    "skill_used": "SKILL_Facebook_Instagram",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Facebook Business Page post drafted — AI Employee for professional services announcement. Action: post_facebook. 4 paragraphs, no URLs, ends with engagement question. Written to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-25T10:30:00Z",
+    "action_type": "odoo_query",
+    "actor": "claude_code",
+    "target": "ODOO_REVIEW_Invoice_Meridian_Consulting_2026-03-25.md",
+    "skill_used": "SKILL_Odoo_Accounting",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "URGENT: Overdue invoice INV-2026-009 — Meridian Consulting Group, £2,400.00, 24 days overdue. Odoo create_invoice action written to Pending_Approval/. Combined with INV-2026-008 (£1,200), total AR now £3,600 — 80% above £2,000 target. Payment chase email also drafted to Inbox/."
+  },
+  {
+    "timestamp": "2026-03-25T10:32:00Z",
+    "action_type": "email_triage",
+    "actor": "claude_code",
+    "target": "DRAFT_REPLY_Overdue_Invoice_Meridian_Consulting_2026-03-25.md",
+    "skill_used": "SKILL_Odoo_Accounting",
+    "approval_status": "pending",
+    "result": "success",
+    "notes": "Payment chase email drafted for overdue INV-2026-009 — Meridian Consulting Group, £2,400.00. Written to Inbox/. Verify accounts@meridiancg.com before approving. Awaiting approval via email-mcp."
+  },
+  {
+    "timestamp": "2026-03-25T10:35:00Z",
+    "action_type": "process_needs_action",
+    "actor": "claude_code",
+    "target": "Needs_Action/ (all 5 files)",
+    "skill_used": "SKILL_Process_Needs_Action",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "All 5 Needs_Action files updated (status: processed, processed_at added) and moved to Done/. Queue cleared. 7 output files written: 2 to Inbox/, 5 to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-25T10:40:00Z",
+    "action_type": "dashboard_update",
+    "actor": "claude_code",
+    "target": "Dashboard.md",
+    "skill_used": "SKILL_Update_Dashboard",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Dashboard.md refreshed: second cycle of 2026-03-25 complete. 5 new items processed (email, linkedin x2, twitter, facebook, odoo). Total 10 items processed today. Pending_Approval/ now has 10 items (5 from each cycle). Queue clear."
+  }
+]

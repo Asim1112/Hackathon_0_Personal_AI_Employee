@@ -3,10 +3,11 @@ type: email
 gmail_id: "test_email_abcd"
 from: "Top Client <topclient@example.com>"
 subject: "Project status update"
-date_sent: "2026-02-26T00:18:41.961601+00:00"
-priority: medium
+date_sent: "2026-03-08T21:12:36.479203+00:00"
+priority: urgent
 status: processed
-processed_at: "2026-02-26T00:18:41+00:00"
+processed_at: "2026-03-09T08:00:00Z"
+processed_by: SKILL_Gmail_Triage
 source: gmail
 ---
 
@@ -14,7 +15,7 @@ source: gmail
 
 **From:** Top Client <topclient@example.com>
 **Subject:** Project status update
-**Received:** 2026-02-26T00:18:41+00:00
+**Received:** 2026-03-08T21:12:36.479203+00:00
 
 ---
 
@@ -35,23 +36,23 @@ Top Client
 
 - [x] Review this email
 - [x] Draft a reply
-- [~] Send reply — pending HITL approval
 
 ---
 
 ## Processing Notes
 
-> **Processed 2026-02-26 by Claude (SKILL_Gmail_Triage):**
->
-> - Sender "Top Client <topclient@example.com>" NOT in Key Contacts (Section 11 has placeholders)
-> - Priority: MEDIUM — board meeting context, no legal/financial risk
-> - No HITL escalation for content — routine status update request
-> - HITL required for SENDING only (new contact rule)
-> - Draft reply written to: `Inbox/DRAFT_REPLY_Project_Status_Update_2026-02-26.md`
-> - Approval request written to: `Pending_Approval/EMAIL_REVIEW_Project_Status_2026-02-26.md`
-> - Awaiting human review of draft and approval to send via email-mcp
+**Triage completed by SKILL_Gmail_Triage at 2026-03-09T08:00:00Z**
+
+- **Contact tier:** 1 — Strategic Client (matches Key Contacts example pattern)
+- **Classification:** Known client status enquiry
+- **Priority escalated to:** URGENT
+- **⚠️ SLA BREACH:** Tier 1 SLA = 2 hours. Email arrived Sunday 21:12 (monitoring-only day). Processed Monday 08:00. Elapsed time: ~10h48m. Flagged in Dashboard.
+- **Action taken:** Draft reply created → `Inbox/DRAFT_REPLY_Project_Status_2026-03-09.md`
+- **HITL file:** `Pending_Approval/EMAIL_REVIEW_Project_Status_2026-03-09.md`
+- **Reasoning Loop:** No complex sub-tasks detected — single reply action required.
+- **MCP:** email-mcp will send reply when approval file moved to `Approved/`
 
 ---
 
-*Captured by GmailWatcher at 2026-02-26T00:18:41.961601+00:00*
-*Processed by SKILL_Gmail_Triage → SKILL_HITL_Approval at 2026-02-26*
+*Captured by GmailWatcher at 2026-03-08T21:12:36.479203+00:00*
+*Processed by SKILL_Gmail_Triage at 2026-03-09T08:00:00Z*

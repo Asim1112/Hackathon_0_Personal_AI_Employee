@@ -2,10 +2,11 @@
 type: whatsapp
 from: "John Smith"
 keyword: invoice
-received: "2026-02-26T00:18:41.961601+00:00"
+received: "2026-03-08T21:12:36.479203+00:00"
 priority: high
 status: processed
-processed_at: "2026-02-26T00:18:41+00:00"
+processed_at: "2026-03-09T08:00:00Z"
+processed_by: SKILL_WhatsApp_Triage
 source: whatsapp
 ---
 
@@ -13,7 +14,7 @@ source: whatsapp
 
 **From:** John Smith
 **Keyword matched:** invoice
-**Received:** 2026-02-26T00:18:41+00:00
+**Received:** 2026-03-08T21:12:36.479203+00:00
 
 ---
 
@@ -26,23 +27,25 @@ Hi, just checking on the invoice you sent last week — can you confirm it's bee
 ## Suggested Actions
 
 - [x] Review this WhatsApp message
-- [~] Reply via WhatsApp (requires HITL if new contact) — HITL file written
+- [x] Reply via WhatsApp (requires HITL if new contact)
 - [x] Log as business intelligence
 
 ---
 
 ## Processing Notes
 
-> **Processed 2026-02-26 by Claude (SKILL_WhatsApp_Triage):**
->
-> - Sender "John Smith" is NOT in Key Contacts (handbook Section 11 has placeholder entries only)
-> - Keyword `invoice` matched → classified as financial_query
-> - HITL trigger #2 fired: new contact rule
-> - Approval request written to: `Pending_Approval/NEW_CONTACT_REVIEW_John_Smith_2026-02-26.md`
-> - Draft reply included in approval file for human review
-> - No outbound action taken — awaiting human approval
+**Triage completed by SKILL_WhatsApp_Triage at 2026-03-09T08:00:00Z**
+
+- **Contact tier:** 4 — General (not in Key Contacts — unknown sender)
+- **Classification:** Invoice confirmation query (keyword: `invoice` + `ASAP`)
+- **Priority:** HIGH
+- **New contact rule applied:** YES — first message from unknown sender
+- **Time gate:** Received 21:12 Sunday (outside gate), processed 08:00 Monday (within gate) ✅
+- **Action taken:** New contact review + draft reply → `Pending_Approval/NEW_CONTACT_REVIEW_John_Smith_WhatsApp_2026-03-09.md`
+- **MCP available:** ❌ None — WhatsApp reply must be sent manually after approval
+- **Financial flag:** Invoice referenced — human should verify invoice exists before replying
 
 ---
 
-*Captured by WhatsAppWatcher at 2026-02-26T00:18:41.961601+00:00*
-*Processed by SKILL_WhatsApp_Triage → SKILL_HITL_Approval at 2026-02-26*
+*Captured by WhatsAppWatcher at 2026-03-08T21:12:36.479203+00:00*
+*Processed by SKILL_WhatsApp_Triage at 2026-03-09T08:00:00Z*

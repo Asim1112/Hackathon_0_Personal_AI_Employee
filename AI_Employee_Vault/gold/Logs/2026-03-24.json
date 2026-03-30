@@ -1,0 +1,72 @@
+[
+  {
+    "timestamp": "2026-03-24T09:05:00Z",
+    "action_type": "email_triage",
+    "actor": "claude_code",
+    "target": "EMAIL_2026-03-24_Project_Status_Enquiry_demo01.md",
+    "skill_used": "SKILL_Gmail_Triage",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Sarah Johnson (TechCorp Ltd, existing Tier 2 client) requested project status update for Friday board meeting. Draft reply written to Inbox/DRAFT_REPLY_Project_Status_Update_2026-03-24.md with [PLACEHOLDER] for delivery date. Source file moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-24T09:20:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "LINKEDIN_2026-03-24_consulting_enquiry_demo02.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "James Carter (CEO, Nexus Ventures) — new contact, fintech consulting enquiry via LinkedIn DM. NEW_CONTACT_REVIEW written to Pending_Approval/NEW_CONTACT_REVIEW_James_Carter_LinkedIn_2026-03-24.md. LinkedIn thought leadership post drafted to Pending_Approval/LINKEDIN_DRAFT_AI_Consulting_Fintech_2026-03-24.md. Tier 3 Prospect assigned. Source file moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-24T09:35:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "TWITTER_2026-03-24_post_request_demo03.md",
+    "skill_used": "SKILL_Twitter_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Admin task: draft Gold Tier launch tweet. post_tweet action (standalone, NOT a reply). 216 chars, hashtags #AIEmployee #Automation #AI. Draft written to Pending_Approval/TWITTER_DRAFT_Gold_Tier_Launch_2026-03-24.md. Source file moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-24T09:50:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "FACEBOOK_2026-03-24_post_request_demo04.md",
+    "skill_used": "SKILL_Facebook_Instagram",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Admin task: draft Gold Tier launch post for Facebook Business Page. post_facebook action. 3 paragraphs, professional tone. Draft written to Pending_Approval/FACEBOOK_DRAFT_Gold_Tier_Launch_2026-03-24.md. Source file moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-24T10:05:00Z",
+    "action_type": "odoo_query",
+    "actor": "claude_code",
+    "target": "ODOO_2026-03-24_overdue_invoice_INV-2026-008.md",
+    "skill_used": "SKILL_Odoo_Accounting",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "INV-2026-008, Bright Solutions Ltd, £1,200.00 — 19 days overdue. create_invoice action written to Pending_Approval/ODOO_REVIEW_Invoice_Bright_Solutions_2026-03-24.md. Payment chase email drafted to Inbox/DRAFT_REPLY_Overdue_Invoice_Bright_Solutions_2026-03-24.md. Both await human approval. Source file moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-24T10:15:00Z",
+    "action_type": "dashboard_update",
+    "actor": "claude_code",
+    "target": "Dashboard.md",
+    "skill_used": "SKILL_Update_Dashboard",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Dashboard refreshed: 5 items processed, Needs_Action/ clear, 5 Pending_Approval files, 2 Inbox files. Accounting summary updated with INV-2026-008 status."
+  },
+  {
+    "timestamp": "2026-03-24T10:16:00Z",
+    "action_type": "audit_log_written",
+    "actor": "claude_code",
+    "target": "Logs/2026-03-24.json",
+    "skill_used": "SKILL_Audit_Logger",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Daily audit log created with 6 entries covering all actions in the 2026-03-24 processing cycle."
+  }
+]

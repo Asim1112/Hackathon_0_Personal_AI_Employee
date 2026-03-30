@@ -74,10 +74,15 @@ logged: false
 ### Posting Notes
 - Suggested time: <weekday HH:MM>
 
+### Action Data
+
+> ⚠️ **MANDATORY — without this JSON block the twitter-mcp will REJECT the file and nothing will be posted.**
+> Copy the tweet text exactly as it appears above into the `content` field below.
+
 ```json
 {
   "action": "post_tweet",
-  "content": "<tweet text — max 280 chars>"
+  "content": "<tweet text — max 280 chars, exact copy of tweet above>"
 }
 ```
 ````
@@ -109,6 +114,11 @@ logged: false
 
 ### Thread Context
 <Purpose and target audience of this thread>
+
+### Action Data
+
+> ⚠️ **MANDATORY — without this JSON block the twitter-mcp will REJECT the file.**
+> Copy each tweet text exactly as written above into the `thread` array.
 
 ```json
 {

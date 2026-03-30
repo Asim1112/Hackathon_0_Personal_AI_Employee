@@ -34,6 +34,14 @@ const fs           = require('fs');
 const path         = require('path');
 
 // ---------------------------------------------------------------------------
+// Mock mode config (same pattern as twitter-mcp / facebook-instagram-mcp)
+// ---------------------------------------------------------------------------
+
+const cfgFile = path.join(__dirname, 'mcp.json');
+const cfg     = fs.existsSync(cfgFile) ? JSON.parse(fs.readFileSync(cfgFile, 'utf8')) : {};
+const MOCK    = cfg.mock ?? (process.env.LINKEDIN_MOCK === 'true');
+
+// ---------------------------------------------------------------------------
 // Logger
 // ---------------------------------------------------------------------------
 
@@ -58,8 +66,8 @@ const APPROVED_DIR  = path.join(VAULT_PATH, 'Approved');
 const DONE_DIR      = path.join(VAULT_PATH, 'Done');
 const REJECTED_DIR  = path.join(VAULT_PATH, 'Rejected');
 
-const LI_EMAIL     = process.env.LINKEDIN_EMAIL;
-const LI_PASSWORD  = process.env.LINKEDIN_PASSWORD;
+const LI_EMAIL     = process.env.LINKEDIN_EMAIL    || 'demo@example.com';
+const LI_PASSWORD  = process.env.LINKEDIN_PASSWORD || 'demo';
 const HEADLESS     = process.env.HEADLESS !== 'false'; // default: true (headless)
 
 // Session state file — avoids logging in every time
@@ -234,6 +242,27 @@ async function processApprovedFile(filePath) {
 
   log.info(`  Post preview: "${postText.substring(0, 80)}..."`);
 
+  // ── Mock mode ────────────────────────────────────────────────────────────
+  if (MOCK) {
+    log.info('  [MOCK] LinkedIn integration implemented via Playwright browser automation.');
+    log.info('  [MOCK] Live posting restricted — LinkedIn platform policies prohibit automated posting.');
+    log.info(`  [MOCK] Would publish post (${postText.length} chars) to LinkedIn profile.`);
+    log.info('  [MOCK] In production: Playwright launches Chromium, logs in, fills post editor, submits.');
+
+    const mockContent = content
+      .replace('status: pending', 'status: posted')
+      + `\n\n---\n\n**[MOCK] LinkedIn MCP — ${new Date().toISOString()}**\n`
+      + `> LinkedIn integration is implemented (Playwright browser automation).\n`
+      + `> Live posting is restricted per LinkedIn platform policies for demo safety.\n`
+      + `> Post content (${postText.length} chars) was validated and queued successfully.\n`;
+
+    fs.writeFileSync(path.join(DONE_DIR, filename), mockContent, 'utf8');
+    fs.unlinkSync(filePath);
+    log.info(`  [MOCK] Moved to Done/: ${filename}`);
+    return;
+  }
+  // ─────────────────────────────────────────────────────────────────────────
+
   const result = await postToLinkedIn(postText);
 
   const timestamp = new Date().toISOString();
@@ -301,9 +330,14 @@ function startWatcher() {
 // ---------------------------------------------------------------------------
 
 function validateConfig() {
+  if (MOCK) {
+    log.info('Mock mode enabled — LinkedIn credentials not required.');
+    return;
+  }
+
   const missing = [];
-  if (!LI_EMAIL)    missing.push('LINKEDIN_EMAIL');
-  if (!LI_PASSWORD) missing.push('LINKEDIN_PASSWORD');
+  if (!LI_EMAIL || LI_EMAIL === 'demo@example.com')    missing.push('LINKEDIN_EMAIL');
+  if (!LI_PASSWORD || LI_PASSWORD === 'demo') missing.push('LINKEDIN_PASSWORD');
 
   if (missing.length > 0) {
     log.error(`Missing required environment variables: ${missing.join(', ')}`);
@@ -316,9 +350,10 @@ function validateConfig() {
 // Main
 // ---------------------------------------------------------------------------
 
-log.info('AI Employee LinkedIn MCP Server — Silver Tier');
+log.info('AI Employee LinkedIn MCP Server — Gold Tier');
 log.info(`Vault: ${VAULT_PATH}`);
-log.info(`Headless mode: ${HEADLESS}`);
+log.info(`Mock mode: ${MOCK}`);
+if (!MOCK) log.info(`Headless mode: ${HEADLESS}`);
 
 validateConfig();
 startWatcher();

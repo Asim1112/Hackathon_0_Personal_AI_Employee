@@ -1,0 +1,152 @@
+[
+  {
+    "timestamp": "2026-03-26T08:30:00Z",
+    "action_type": "email_triage",
+    "actor": "claude_code",
+    "target": "EMAIL_2026-03-26_AI_Project_Milestone_demo01.md",
+    "skill_used": "SKILL_Gmail_Triage",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Existing client Sarah Johnson (TechCorp Ltd) — Q2 AI Integration milestone status request. Draft reply written to Inbox/DRAFT_REPLY_Q2_AI_Project_Milestone_2026-03-26.md covering all 3 board questions + Tuesday call confirmation. 2x [PLACEHOLDER] items require human fill-in before approving."
+  },
+  {
+    "timestamp": "2026-03-26T08:35:00Z",
+    "action_type": "approval_requested",
+    "actor": "claude_code",
+    "target": "NEW_CONTACT_REVIEW_Marcus_Webb_LinkedIn_2026-03-26.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "New contact — Marcus Webb, COO Apex Advisory Partners. First-ever LinkedIn DM. High-value lead (45-person firm, 3 explicit pain point matches). New contact rule applied — HITL required before any reply. Review file written to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-26T08:38:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "LINKEDIN_DRAFT_Enterprise_Automation_Consulting_2026-03-26.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "LinkedIn thought leadership post drafted — enterprise automation for professional services / operational overhead theme (~178 words, 5 hashtags). Written to Pending_Approval/. Quota: 1/3 posts used this week (check before approving day of). Source: LINKEDIN_2026-03-26_enterprise_automation_enquiry_demo02.md -> Done/"
+  },
+  {
+    "timestamp": "2026-03-26T08:42:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "TWITTER_DRAFT_AI_Employee_Capabilities_2026-03-26.md",
+    "skill_used": "SKILL_Twitter_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Standalone tweet drafted — 5-channel monitoring + HITL operations for professional services (256/280 chars, 3 hashtags). Written to Pending_Approval/. Source: TWITTER_2026-03-26_post_request_demo03.md -> Done/"
+  },
+  {
+    "timestamp": "2026-03-26T08:45:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "FACEBOOK_DRAFT_AI_Employee_Professional_Services_2026-03-26.md",
+    "skill_used": "SKILL_Facebook_Instagram",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Facebook Business Page post drafted — 4 paragraphs, professional tone, no emojis, no URLs. Gold Tier AI Employee for professional services. Ends with engagement question. Written to Pending_Approval/. Source: FACEBOOK_2026-03-26_post_request_demo04.md -> Done/"
+  },
+  {
+    "timestamp": "2026-03-26T08:48:00Z",
+    "action_type": "odoo_query",
+    "actor": "claude_code",
+    "target": "ODOO_REVIEW_Invoice_Meridian_Consulting_2026-03-26.md",
+    "skill_used": "SKILL_Odoo_Accounting",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Odoo alert — INV-2026-010 Meridian Consulting Group £2,400.00, 31 days overdue. create_invoice action drafted to Pending_Approval/. Payment chase email drafted to Inbox/DRAFT_REPLY_Overdue_Invoice_Meridian_Consulting_2026-03-26.md. Human must add recipient email before approving chase. Source: ODOO_2026-03-26_overdue_invoice_INV-2026-010.md -> Done/"
+  },
+  {
+    "timestamp": "2026-03-26T08:55:00Z",
+    "action_type": "cycle_complete",
+    "actor": "claude_code",
+    "target": "Needs_Action/",
+    "skill_used": "SKILL_Process_Needs_Action",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Daily processing cycle complete. 5 items processed: 1 email, 1 linkedin DM (new contact), 1 twitter post request, 1 facebook post request, 1 odoo alert. 7 files written: 2 to Inbox/ (email draft + payment chase), 5 to Pending_Approval/ (new contact review, linkedin draft, twitter draft, facebook draft, odoo invoice). All 5 source files moved to Done/. Needs_Action/ empty."
+  },
+  {
+    "timestamp": "2026-03-26T09:30:00Z",
+    "action_type": "daily_briefing",
+    "actor": "claude_code",
+    "target": "Inbox/BRIEFING_2026-03-26.md",
+    "skill_used": "SKILL_Daily_Briefing",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Morning briefing written — Cycle 2. Urgency: ACTION_NEEDED. 5 new items in queue (Needs_Action/ repopulated with fresh demo batch). 1 critical Odoo overdue invoice (£2,400, 31 days), 1 high-value new lead (Marcus Webb COO), 1 board-deadline email (Sarah Johnson). Pending_Approval/ was empty at cycle start."
+  },
+  {
+    "timestamp": "2026-03-26T09:32:00Z",
+    "action_type": "email_triage",
+    "actor": "claude_code",
+    "target": "EMAIL_2026-03-26_AI_Project_Milestone_demo01.md",
+    "skill_used": "SKILL_Gmail_Triage",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Existing client Sarah Johnson (TechCorp Ltd) — Q2 AI Integration milestone update for Friday board meeting. Draft reply written to Inbox/DRAFT_REPLY_Q2_AI_Project_Milestone_2026-03-26.md — covers email triage status, LinkedIn/CRM pipeline status, Odoo April go-live, Tuesday 2pm call confirmation. 2x [PLACEHOLDER] items need human fill before send. Source -> Done/."
+  },
+  {
+    "timestamp": "2026-03-26T09:35:00Z",
+    "action_type": "approval_requested",
+    "actor": "claude_code",
+    "target": "NEW_CONTACT_REVIEW_Marcus_Webb_LinkedIn_2026-03-26.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "New contact — Marcus Webb, COO Apex Advisory Partners (45 people, financial services advisory). 3 pain points match service offerings exactly. HITL rule applied — new contact. Review file written to Pending_Approval/. Discovery call window 'next week' — time-sensitive. Tier assignment: Tier 3 Prospect."
+  },
+  {
+    "timestamp": "2026-03-26T09:38:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "LINKEDIN_DRAFT_Enterprise_Automation_Consulting_2026-03-26.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "LinkedIn thought leadership post drafted — enterprise automation / operational overhead theme. ~175 words, 5 hashtags, 0 client names, passes all Section 7.5 privacy checks. Written to Pending_Approval/. Max 1 post per day — check quota before approving."
+  },
+  {
+    "timestamp": "2026-03-26T09:42:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "TWITTER_DRAFT_AI_Employee_Capabilities_2026-03-26.md",
+    "skill_used": "SKILL_Twitter_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Standalone tweet — 5-channel monitoring + HITL approval for professional services. 265/280 chars, 3 hashtags. action: post_tweet. Action Data JSON block present. Written to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-26T09:45:00Z",
+    "action_type": "social_draft",
+    "actor": "claude_code",
+    "target": "FACEBOOK_DRAFT_AI_Employee_Professional_Services_2026-03-26.md",
+    "skill_used": "SKILL_Facebook_Instagram",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Facebook Business Page post — Gold Tier AI Employee for professional services. 4 paragraphs + engagement question. No emojis, no URLs, no generic phrases. message field in Action Data JSON block present. Written to Pending_Approval/."
+  },
+  {
+    "timestamp": "2026-03-26T09:48:00Z",
+    "action_type": "odoo_draft_created",
+    "actor": "claude_code",
+    "target": "ODOO_REVIEW_Invoice_Meridian_Consulting_2026-03-26.md",
+    "skill_used": "SKILL_Odoo_Accounting",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Odoo alert INV-2026-010 — Meridian Consulting Group, £2,400.00, 31 days overdue (due 2026-02-24). create_invoice action file written to Pending_Approval/ with Action Data JSON. Payment chase email drafted to Inbox/DRAFT_REPLY_Overdue_Invoice_Meridian_Consulting_2026-03-26.md (add recipient email before approving). Amount >£50 — HITL rule applied."
+  },
+  {
+    "timestamp": "2026-03-26T09:52:00Z",
+    "action_type": "cycle_complete",
+    "actor": "claude_code",
+    "target": "Needs_Action/",
+    "skill_used": "SKILL_Process_Needs_Action",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Cycle 2 complete (2026-03-26T09:52:00Z). 5 items processed: 1 email (Sarah Johnson milestone update), 1 linkedin new contact (Marcus Webb COO), 1 twitter post request, 1 facebook post request, 1 odoo overdue alert (INV-2026-010 Meridian £2,400). 8 files written total: 3 to Inbox/ (briefing + email draft + payment chase), 5 to Pending_Approval/ (new contact review + linkedin draft + twitter draft + facebook draft + odoo invoice). All 5 source files -> Done/. Needs_Action/ empty."
+  }
+]

@@ -1,0 +1,224 @@
+{
+  "main": {
+    "id": "60719a1a2bb21507",
+    "type": "split",
+    "children": [
+      {
+        "id": "8d94e445f3b54548",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cb225e120c1d1da8",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "906d7536804c0c1f",
+    "type": "split",
+    "children": [
+      {
+        "id": "701155742f966e3f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d1c8ecc49664aa87",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "ac8d58dd6e11e619",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "57e6d86cfdbc2715",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 313.5086555480957
+  },
+  "right": {
+    "id": "70f7051bb4d1b8db",
+    "type": "split",
+    "children": [
+      {
+        "id": "640cb540ccb3f281",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1e6045adad7535e0",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Company_Handbook.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Company_Handbook"
+            }
+          },
+          {
+            "id": "299b5f29bafa61e6",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Company_Handbook.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Company_Handbook"
+            }
+          },
+          {
+            "id": "ea4395a2bfcd1fb2",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "a9c990cfca90be8b",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "f582464a7495abf7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Company_Handbook.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Company_Handbook"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "d1c8ecc49664aa87",
+  "lastOpenFiles": [
+    "whatsapp_session/Default/Network/7a63a954-d0a8-4d6e-9ba7-4160ed874d2e.tmp",
+    "whatsapp_session/Default/b486019e-46e5-4bd7-87ce-fe038a885084.tmp",
+    "whatsapp_session/Default/Network/36554f4e-9978-4462-a55e-b48ac185ed3b.tmp",
+    "whatsapp_session/Default/c8cf9f51-e515-406b-a1b6-b9fe3b470866.tmp",
+    "whatsapp_session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/007017.ldb",
+    "whatsapp_session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/007016.log",
+    "whatsapp_session/Default/Service Worker/ScriptCache/index-dir/temp-index",
+    "whatsapp_session/Default/403cdf14-0240-41a2-bdc0-b38bacedcad1.tmp",
+    "whatsapp_session/Default/Service Worker/ScriptCache/9ff026236b3a5017_1",
+    "whatsapp_session/Default/Service Worker/ScriptCache/cd3086166a2e42a1_1",
+    "whatsapp_session/Default/Service Worker/ScriptCache/cd3086166a2e42a1_0",
+    "Pending_Approval/NEW_CONTACT_REVIEW_Jane_Doe_LinkedIn_DM_2026-03-09.md",
+    "Approved/LINKEDIN_DRAFT_Consulting_Services_2026-03-09.md",
+    "Approved/EMAIL_REVIEW_Project_Status_2026-03-09.md",
+    "Inbox/DRAFT_REPLY_Project_Status_2026-03-09.md",
+    "Inbox/BRIEFING_2026-03-09.md",
+    "Rejected/NEW_CONTACT_REVIEW_John_Smith_WhatsApp_2026-03-09.md",
+    "Rejected/NEW_CONTACT_REVIEW_John_Smith_WhatsApp_2026-03-09.md",
+    "Needs_Action/EMAIL_TEST_2026-02-25_Project_Status_testabcd.md",
+    "Needs_Action/LINKEDIN_TEST_2026-02-25_Business_Proposal_test5678.md",
+    "Needs_Action/WHATSAPP_TEST_2026-02-25_John_Smith_test1234.md",
+    "Approved/LINKEDIN_DRAFT_Consulting_Services_2026-03-09.md",
+    "Approved/EMAIL_REVIEW_Project_Status_2026-03-09.md",
+    "Inbox/DRAFT_REPLY_WhatsApp_John_Smith_Invoice_2026-03-09.md",
+    "Inbox/DRAFT_REPLY_Project_Status_Update_2026-03-09.md",
+    "Done/LINKEDIN_TEST_2026-02-25_Business_Proposal_test5678.md",
+    "Done/WHATSAPP_TEST_2026-02-25_John_Smith_test1234.md",
+    "Done/EMAIL_TEST_2026-02-25_Project_Status_testabcd.md",
+    "Needs_Action/LINKEDIN_2026-03-09_Tehrim_Fatima_Unread_notification_You_ma_a0eecf34.md",
+    "Needs_Action/LINKEDIN_2026-03-09_Unread_notification_Saira_Rizvi_posted_H_bf4bf821.md",
+    "Needs_Action/LINKEDIN_2026-03-09_Syeda_Hafsa_posted_𝐈𝐒𝐍𝐓_𝐈𝐓_𝐈𝐍𝐓𝐄𝐑𝐍𝐀𝐓𝐈𝐎𝐍𝐀𝐋_497f7edb.md",
+    "Needs_Action/LINKEDIN_2026-03-09_Syeda_Hafsa_reposted_Syeda_Hafsas_post_𝐈_abb2cded.md",
+    "Needs_Action/LINKEDIN_2026-03-08_Unread_notification_People_are_engaging_67e55ef8.md",
+    "Needs_Action/LINKEDIN_2026-03-08_Tehrim_Fatima_Unread_notification_You_ma_f09b76d0.md",
+    "Needs_Action/LINKEDIN_2026-03-08_Unread_notification_Saira_Rizvi_posted_H_8901465f.md",
+    "Needs_Action/LINKEDIN_2026-03-08_Unread_notification_Syeda_Hafsa_posted_𝐈_63ab1ef9.md",
+    "mcp_servers/linkedin-mcp/node_modules/playwright-core/lib/vite/traceViewer/playwright-logo.svg",
+    "mcp_servers/linkedin-mcp/node_modules/playwright-core/lib/vite/recorder/playwright-logo.svg",
+    "mcp_servers/linkedin-mcp/node_modules/playwright-core/lib/server/chromium/appIcon.png"
+  ]
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "timestamp": "2026-03-23T08:00:00Z",
+    "action_type": "daily_briefing",
+    "actor": "claude_code",
+    "target": "Inbox/BRIEFING_2026-03-23.md",
+    "skill_used": "SKILL_Daily_Briefing",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Morning briefing generated — 5 items in queue, urgency: ACTION_NEEDED. 1 urgent (overdue invoice), 4 high-priority."
+  },
+  {
+    "timestamp": "2026-03-23T09:30:00Z",
+    "action_type": "email_triage",
+    "actor": "claude_code",
+    "target": "EMAIL_2026-03-23_Project_Status_Enquiry_demo01.md",
+    "skill_used": "SKILL_Gmail_Triage",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Sarah Johnson (TechCorp Ltd, existing contact) — project status enquiry for Friday board meeting. Classification: DRAFT_REPLY. Draft written to Inbox/DRAFT_REPLY_Project_Status_Update_2026-03-23.md. Priority: HIGH (Friday deadline). File moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-23T09:30:00Z",
+    "action_type": "linkedin_opportunity_processed",
+    "actor": "claude_code",
+    "target": "LINKEDIN_2026-03-23_consulting_enquiry_demo02.md",
+    "skill_used": "SKILL_LinkedIn_Draft",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "James Carter, CEO Nexus Ventures — new contact, fintech AI consulting enquiry. New contact rule triggered: NEW_CONTACT_REVIEW written to Pending_Approval/NEW_CONTACT_REVIEW_James_Carter_LinkedIn_2026-03-23.md. Thought leadership LinkedIn post drafted to Pending_Approval/LINKEDIN_DRAFT_AI_Consulting_Fintech_2026-03-23.md. File moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-23T09:45:00Z",
+    "action_type": "twitter_draft_created",
+    "actor": "claude_code",
+    "target": "TWITTER_2026-03-23_post_request_demo03.md",
+    "skill_used": "SKILL_Twitter_Draft",
+    "approval_status": "pending",
+    "result": "success",
+    "notes": "Admin request: standalone post_tweet announcing Gold Tier AI Employee launch (218 chars). 5-platform integration mentioned. Draft written to Pending_Approval/TWITTER_DRAFT_Gold_Tier_Launch_2026-03-23.md. File moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-23T10:00:00Z",
+    "action_type": "facebook_post_drafted",
+    "actor": "claude_code",
+    "target": "FACEBOOK_2026-03-23_post_request_demo04.md",
+    "skill_used": "SKILL_Facebook_Instagram",
+    "approval_status": "pending",
+    "result": "success",
+    "notes": "Admin request: Facebook Business Page post announcing Gold Tier launch. 3 paragraphs, professional tone, content_pillar: behind_scenes. Draft written to Pending_Approval/FACEBOOK_DRAFT_Gold_Tier_Launch_2026-03-23.md. File moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-23T10:05:00Z",
+    "action_type": "odoo_overdue_alert",
+    "actor": "claude_code",
+    "target": "INV-2026-008",
+    "skill_used": "SKILL_Odoo_Accounting",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "Bright Solutions Ltd — INV-2026-008, £1,200.00, 18 days overdue (due 2026-03-05). action: create_invoice Odoo action drafted to Pending_Approval/ODOO_REVIEW_Invoice_Bright_Solutions_2026-03-23.md. Payment chase email drafted to Inbox/DRAFT_REPLY_Overdue_Invoice_Bright_Solutions_2026-03-23.md. File moved to Done/."
+  },
+  {
+    "timestamp": "2026-03-23T10:10:00Z",
+    "action_type": "processing_cycle_complete",
+    "actor": "claude_code",
+    "target": "Needs_Action/",
+    "skill_used": "SKILL_Process_Needs_Action",
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Full daily workflow complete. 5 items processed across 5 channels (email, linkedin, twitter, facebook, odoo). 7 output files written (2 Inbox/, 5 Pending_Approval/). 5 source files moved to Done/. Needs_Action/ clear. Dashboard.md updated."
+  }
+]

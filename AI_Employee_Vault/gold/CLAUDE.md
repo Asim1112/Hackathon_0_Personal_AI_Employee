@@ -209,18 +209,131 @@ If `Logs/YYYY-MM-DD.json` does not exist, create it as a JSON array `[]` and app
 
 ## Frontmatter Requirements
 
-Every file you create or modify MUST have YAML frontmatter:
+> ⚠️ **CRITICAL — READ BEFORE WRITING ANY FILE**
+> MCP servers check `type` and `send_via_mcp` with EXACT string matching. If either field is wrong or missing, the MCP silently skips the file and the action never executes.
+> **Always use the exact values from the MCP Cheat Sheet below — never invent types.**
+
+### MCP Cheat Sheet — Exact Frontmatter Required
+
+For any file destined for an MCP server, use ONLY these exact values:
+
+| Destination MCP | Required `type` | Required `send_via_mcp` | Required `action` | Other required fields |
+|---|---|---|---|---|
+| **email-mcp** (send email) | `draft_reply` | `email-mcp` | *(none)* | `to: <email address>`, `subject: <text>` |
+| **twitter-mcp** (post tweet) | `social_draft` | `twitter-mcp` | `post_tweet` or `reply_tweet` | `platform: twitter`, `char_count: <n>` |
+| **facebook-instagram-mcp** (Facebook post) | `social_post` | `facebook-instagram-mcp` | `post_facebook` | `platform: facebook` |
+| **facebook-instagram-mcp** (Instagram post) | `social_post` | `facebook-instagram-mcp` | `post_instagram` | `platform: instagram`, `image_url: <url>` |
+| **linkedin-mcp** (LinkedIn post) | `linkedin_draft` | `linkedin-mcp` | *(none)* | `platform: linkedin`, `approved: false` |
+| **odoo-mcp** (invoice / accounting) | `odoo_action` | `odoo-mcp` | `create_invoice` or `sync_accounting` | `platform: odoo` |
+
+> ⚠️ **MANDATORY: Every MCP-bound file (except email) MUST contain a `## Action Data` section with a ```json block in the file body.** The MCP extracts action parameters from this JSON — if missing, the file is moved to `Rejected/` with no action taken.
+>
+> **Required JSON fields per MCP:**
+> - `twitter-mcp`: `{ "content": "<tweet text>" }` or `{ "thread": ["tweet1", "tweet2", ...] }`
+> - `facebook-instagram-mcp`: `{ "message": "<post text>" }` (Facebook) or `{ "caption": "...", "image_url": "..." }` (Instagram)
+> - `odoo-mcp` (create_invoice): `{ "partner_name": "...", "lines": [{ "name": "...", "quantity": 1, "price_unit": 0.00 }] }`
+> - `linkedin-mcp`: no JSON block required (posts the markdown body directly)
+
+### Complete Frontmatter Templates
+
+**Email draft** (goes to `Inbox/` first, human moves to `Approved/`):
+```yaml
+---
+type: draft_reply
+send_via_mcp: email-mcp
+to: <recipient@email.com>
+subject: <email subject line>
+in_reply_to_file: <source filename>
+created: <ISO timestamp>
+status: pending
+logged: false
+---
+```
+
+**Twitter post draft** (goes to `Pending_Approval/` first):
+```yaml
+---
+type: social_draft
+platform: twitter
+send_via_mcp: twitter-mcp
+action: post_tweet
+created: <ISO timestamp>
+status: pending
+char_count: <n>
+logged: false
+---
+```
+
+**Facebook post draft** (goes to `Pending_Approval/` first):
+```yaml
+---
+type: social_post
+platform: facebook
+send_via_mcp: facebook-instagram-mcp
+action: post_facebook
+created: <ISO timestamp>
+status: pending
+logged: false
+---
+```
+
+**Instagram post draft** (goes to `Pending_Approval/` first):
+```yaml
+---
+type: social_post
+platform: instagram
+send_via_mcp: facebook-instagram-mcp
+action: post_instagram
+image_url: <required — Instagram rejects without this>
+created: <ISO timestamp>
+status: pending
+logged: false
+---
+```
+
+**LinkedIn post draft** (goes to `Pending_Approval/` first):
+```yaml
+---
+type: linkedin_draft
+platform: linkedin
+send_via_mcp: linkedin-mcp
+post_type: <thought_leadership | service_announcement | success_story>
+created: <ISO timestamp>
+status: pending
+approved: false
+logged: false
+---
+```
+
+**Odoo action** (goes to `Pending_Approval/` first):
+```yaml
+---
+type: odoo_action
+platform: odoo
+send_via_mcp: odoo-mcp
+action: create_invoice
+created: <ISO timestamp>
+status: pending
+logged: false
+---
+```
+
+### Non-MCP File Types
+
+For files that do NOT trigger MCP servers (human review, internal tracking):
 
 ```yaml
 ---
-type: <email | whatsapp | twitter | facebook | instagram | odoo_alert | draft_reply | social_draft | approval_request | plan | briefing | accounting_summary>
-status: <pending | in_progress | processed | escalated | approved | rejected>
+type: <approval_request | plan | daily_briefing | accounting_summary | whatsapp | email | odoo_alert>
+status: <pending | in_progress | processed | escalated>
 created: <ISO timestamp>
-processed_at: <ISO timestamp>   # add when processing
-platform: <gmail | whatsapp | linkedin | twitter | facebook | instagram | odoo>  # if applicable
-logged: <true | false>          # set to true after writing to Logs/
+processed_at: <ISO timestamp>    # add when you finish processing
+platform: <gmail | whatsapp | linkedin | twitter | facebook | instagram | odoo>
+logged: <true | false>
 ---
 ```
+
+> ℹ️ `approval_request` is for human-review-only files (new contact decisions, escalations) that do NOT trigger any MCP. For files that WILL be sent after approval, use the MCP-specific types above.
 
 ---
 
@@ -240,17 +353,27 @@ Done/PLAN_<slug>_<date>.md   (status: complete)
 
 ## MCP Server Integration
 
-The vault includes Node.js MCP servers in `mcp_servers/`:
+The vault includes Node.js MCP servers in `mcp_servers/`. They watch `Approved/` continuously and trigger when a file with the correct frontmatter appears.
 
-| MCP Server | Purpose | Trigger |
-|---|---|---|
-| `email-mcp` | Send approved email drafts via nodemailer | File moved to `/Approved/` |
-| `linkedin-mcp` | Post approved LinkedIn drafts via Playwright | File moved to `/Approved/` |
-| `odoo-mcp` | Create/query Odoo records via JSON-RPC | File moved to `/Approved/` |
-| `twitter-mcp` | Post approved tweets via Twitter API v2 | File moved to `/Approved/` |
-| `facebook-instagram-mcp` | Post to Facebook/Instagram via Meta Graph API | File moved to `/Approved/` |
+| MCP Server | Purpose | Checks for | Moves to |
+|---|---|---|---|
+| `email-mcp` | Send email via SMTP | `type: draft_reply` | `Done/` on success, `Rejected/` on failure |
+| `linkedin-mcp` | Post to LinkedIn | `type: linkedin_draft` + `send_via_mcp: linkedin-mcp` | `Done/` on success |
+| `odoo-mcp` | Create/query Odoo records | `type: odoo_action` + `send_via_mcp: odoo-mcp` | `Done/` on success |
+| `twitter-mcp` | Post tweet via Twitter API v2 | `type: social_draft` + `send_via_mcp: twitter-mcp` | `Done/` on success |
+| `facebook-instagram-mcp` | Post to Facebook/Instagram | `type: social_post` + `send_via_mcp: facebook-instagram-mcp` | `Done/` on success |
 
 **Claude does NOT call MCP servers directly.** They run as separate processes watching `Approved/`.
+
+> ⚠️ **MCP servers use EXACT string matching.** If `type` or `send_via_mcp` don't match, the file is silently skipped — no error, no action. Always use the Frontmatter Templates above.
+
+### What Happens to Files in Approved/
+
+Each MCP server scans ALL files in `Approved/` on startup and on every new file added. It will:
+1. Skip any file whose `type` / `send_via_mcp` doesn't match its own
+2. Process matching files, execute the external action
+3. Update `status: pending` → `status: done` in the file
+4. Move the file from `Approved/` to `Done/`
 
 ---
 

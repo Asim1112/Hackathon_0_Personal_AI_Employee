@@ -30,6 +30,19 @@ created: 2026-02-25
 
 # SKILL: HITL Approval (Silver Tier)
 
+> ⚠️ **CRITICAL — Do NOT use this skill to write social media drafts or Odoo action files.**
+>
+> This skill writes `type: approval_request` files — these are **human-review-only** files that do NOT trigger any MCP server.
+>
+> For files that WILL be acted on by an MCP after approval, use the platform-specific skill instead:
+> - Twitter posts → use **SKILL_Twitter_Draft** (writes `type: social_draft` + `send_via_mcp: twitter-mcp`)
+> - Facebook/Instagram posts → use **SKILL_Facebook_Instagram** (writes `type: social_post` + `send_via_mcp: facebook-instagram-mcp`)
+> - LinkedIn posts → use **SKILL_LinkedIn_Draft** (writes `type: linkedin_draft` + `send_via_mcp: linkedin-mcp`)
+> - Odoo invoices → use **SKILL_Odoo_Accounting** (writes `type: odoo_action` + `send_via_mcp: odoo-mcp`)
+> - Email replies → use **SKILL_Gmail_Triage** (writes `type: draft_reply` + `send_via_mcp: email-mcp`)
+>
+> Use THIS skill only for: new contact reviews, payment approvals, legal/compliance reviews, and other decisions that require human judgement but do NOT directly trigger an MCP server.
+
 ## What This Skill Does
 
 Provides the canonical **Human-in-the-Loop gate** for the Silver AI Employee.

@@ -85,12 +85,14 @@ logged: false
 <2–3 sentences: value to followers, why now>
 
 ### Action Data
+
+> ⚠️ **MANDATORY — without this JSON block the facebook-instagram-mcp will REJECT the file.**
+> Copy the full post text exactly as written above into the `message` field.
+
 ```json
 {
-  "platform": "facebook",
-  "message": "<full post text>",
-  "link": "<optional URL to include>",
-  "link_name": "<optional link title>"
+  "message": "<full post text — exact copy of Post Content above>",
+  "link": "<optional URL to include — omit field if not needed>"
 }
 ```
 
