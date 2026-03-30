@@ -35,6 +35,7 @@ from pathlib import Path
 
 import schedule
 from dotenv import load_dotenv
+from email_sender import watch_approved as _email_watch_approved
 
 VAULT = Path(__file__).parent.resolve()
 load_dotenv(VAULT / ".env")
@@ -200,26 +201,10 @@ def auto_pull_loop() -> None:
 
 def watch_approved() -> None:
     """
-    Poll Approved/ every 10s.
-    The email-mcp Node.js process handles sending — this just logs for visibility.
+    Poll Approved/ every 10s via email_sender.
+    Handles draft_reply (sends email) and approval_request (acknowledges).
     """
-    approved = VAULT / "Approved"
-    seen: set[str] = set()
-    log.info("Watching Approved/ every %ds (email-mcp handles send)", APPROVED_POLL_INTERVAL)
-
-    while True:
-        time.sleep(APPROVED_POLL_INTERVAL)
-        try:
-            if not approved.exists():
-                continue
-            for f in approved.glob("*.md"):
-                if f.name not in seen:
-                    seen.add(f.name)
-                    log.info(
-                        "Approved file detected: %s — email-mcp will process this", f.name
-                    )
-        except Exception as e:
-            log.error("Approved/ watcher error: %s", e)
+    _email_watch_approved(once=False)
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 

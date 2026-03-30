@@ -27,7 +27,10 @@ from googleapiclient.errors import HttpError
 
 from base_watcher import BaseWatcher
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send",
+]
 
 URGENT_KEYWORDS = {
     "urgent", "asap", "immediately", "critical", "deadline",
