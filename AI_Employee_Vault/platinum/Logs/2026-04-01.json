@@ -6,5 +6,13 @@
     "file": "APPROVAL_2026-03-30_NayaPay_wallet_created_19d38522.md",
     "from": "NayaPay <service@nayapay.com>",
     "subject": "You made it! 🚀"
+  },
+  {
+    "timestamp": "2026-03-31T19:34:35.004819+00:00",
+    "agent": "local_agent",
+    "action": "email_acknowledged",
+    "file": "APPROVAL_2026-03-30_NayaPay_wallet_processing_19d3590b.md",
+    "from": "NayaPay <service@nayapay.com>",
+    "subject": "Your wallet is being processed"
   }
 ]
