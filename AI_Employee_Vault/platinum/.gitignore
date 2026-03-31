@@ -25,6 +25,7 @@ uv.lock
 # === NODE ===
 node_modules/
 npm-debug.log
+mcp.json
 
 # === OS ===
 .DS_Store
