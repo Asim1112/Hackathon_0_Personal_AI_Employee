@@ -6,5 +6,25 @@
     "file": "APPROVAL_2026-03-30_AWS_EC2_Validated_19d39874.md",
     "from": "Amazon Web Services <no-reply@amazonaws.com>",
     "subject": "Your Request For Accessing AWS Resources Has Been Validated"
+  },
+  {
+    "timestamp": "2026-03-31T22:45:00Z",
+    "action_type": "claim_task",
+    "actor": "cloud_agent",
+    "target": "EMAIL_2026-04-01_Project_Status_Request_demo001.md",
+    "skill_used": null,
+    "approval_status": "not_required",
+    "result": "success",
+    "notes": "Claimed email from Needs_Action/email/ → In_Progress/cloud_agent/"
+  },
+  {
+    "timestamp": "2026-03-31T22:45:01Z",
+    "action_type": "approval_requested",
+    "actor": "cloud_agent",
+    "target": "demo.reviewer@gmail.com",
+    "skill_used": "SKILL_Gmail_Triage",
+    "approval_status": "pending",
+    "result": "escalated",
+    "notes": "New contact requesting project status update — wrote approval_request to Pending_Approval/email/APPROVAL_2026-03-31_Project_Status_Request_demo001.md; moved source to Done/"
   }
 ]
