@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ai_employee
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: ${ODOO_DB_PASSWORD}
+    volumes:
+      - odoo-db:/var/lib/postgresql/data
+    restart: always
+    mem_limit: 300m
+
+  odoo:
+    image: odoo:17
+    depends_on: [db]
+    environment:
+      HOST: db
+      USER: odoo
+      PASSWORD: ${ODOO_DB_PASSWORD}
+    volumes:
+      - odoo-data:/var/lib/odoo
+    ports:
+      - "127.0.0.1:8069:8069"
+    restart: always
+    mem_limit: 700m
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on: [odoo]
+    restart: always
+
+volumes:
+  odoo-db:
+  odoo-data:

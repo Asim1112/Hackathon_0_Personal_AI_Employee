@@ -27,6 +27,10 @@ node_modules/
 npm-debug.log
 mcp.json
 
+# === DOCKER ===
+docker/odoo/certs/*.crt
+docker/odoo/certs/*.key
+
 # === OS ===
 .DS_Store
 Thumbs.db
