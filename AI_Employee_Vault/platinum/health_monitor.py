@@ -1,7 +1,7 @@
 """
 health_monitor.py — Cloud VM Health Monitor for Platinum tier.
 
-Runs on the Oracle Cloud VM alongside cloud_orchestrator.py.
+Runs on the AWS EC2 VM alongside cloud_orchestrator.py.
 Managed by PM2 as a separate process: pm2 start health_monitor.py
 
 Responsibilities:
@@ -25,6 +25,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import httpx
 from dotenv import load_dotenv
 
 # Vault root is platinum/ directory
@@ -89,11 +90,38 @@ def check_disk() -> dict:
         return {"free_mb": -1, "total_mb": -1, "ok": True}
 
 
-def write_status(pm2: dict, disk: dict) -> None:
+def check_odoo() -> str:
+    """Check Odoo health by hitting /web/database/selector (no auth required).
+
+    Returns "healthy" if HTTP response < 500, or "unreachable: <error>" on failure.
+    Uses verify=False because Odoo runs behind a self-signed certificate.
+    """
+    odoo_url = os.getenv("ODOO_URL", "https://localhost")
+    try:
+        resp = httpx.get(
+            f"{odoo_url}/web/database/selector",
+            timeout=10,
+            verify=False,
+            follow_redirects=True,
+        )
+        if resp.status_code < 500:
+            return "healthy"
+        return f"unhealthy: HTTP {resp.status_code}"
+    except Exception as e:
+        return f"unreachable: {e}"
+
+
+def write_status(pm2: dict, disk: dict, odoo: str) -> None:
     """Write a human-readable status summary to Updates/cloud_health.md."""
-    now       = datetime.now(timezone.utc).isoformat()
-    pm2_icon  = "✅" if pm2["status"] == "online" else "❌"
-    disk_icon = "✅" if disk["ok"] else "⚠️"
+    now        = datetime.now(timezone.utc).isoformat()
+    pm2_icon   = "✅" if pm2["status"] == "online" else "❌"
+    disk_icon  = "✅" if disk["ok"] else "⚠️"
+    odoo_icon  = "✅" if odoo == "healthy" else "❌"
+    overall    = (
+        "healthy"
+        if pm2["status"] == "online" and disk["ok"] and odoo == "healthy"
+        else "degraded"
+    )
 
     content = f"""---
 agent: cloud_agent
@@ -101,7 +129,8 @@ last_check: {now}
 pm2_status: {pm2['status']}
 pm2_restarts: {pm2['restarts']}
 disk_free_mb: {disk['free_mb']}
-overall: {"healthy" if pm2["status"] == "online" and disk["ok"] else "degraded"}
+odoo_status: {odoo}
+overall: {overall}
 ---
 
 # Cloud Agent Health — {now}
@@ -110,6 +139,7 @@ overall: {"healthy" if pm2["status"] == "online" and disk["ok"] else "degraded"}
 |---|---|
 | PM2 cloud-agent | {pm2_icon} {pm2['status']} (restarts: {pm2['restarts']}) |
 | Disk free | {disk_icon} {disk['free_mb']} MB free of {disk['total_mb']} MB |
+| Odoo Community | {odoo_icon} {odoo} |
 
 *Updated every {CHECK_INTERVAL // 60} min by health_monitor.py*
 """
@@ -160,12 +190,13 @@ def run(interval: int = CHECK_INTERVAL) -> None:
             # 1. Write heartbeat
             write_heartbeat()
 
-            # 2. Check PM2
+            # 2. Check PM2, disk, Odoo
             pm2  = check_pm2()
             disk = check_disk()
+            odoo = check_odoo()
 
             # 3. Write status summary
-            write_status(pm2, disk)
+            write_status(pm2, disk, odoo)
 
             # 4. Alert on problems
             if pm2["status"] not in ("online", "pm2_unavailable"):
@@ -174,6 +205,8 @@ def run(interval: int = CHECK_INTERVAL) -> None:
                 write_alert(f"cloud-agent has restarted {pm2['restarts']} times (unstable)")
             if not disk["ok"]:
                 write_alert(f"Low disk space: {disk['free_mb']} MB free")
+            if odoo != "healthy":
+                write_alert(f"Odoo health check failed: {odoo}")
 
             # 5. Git push every 3rd iteration (every 15 min)
             push_counter += 1

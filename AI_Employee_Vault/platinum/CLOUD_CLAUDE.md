@@ -29,6 +29,7 @@ created: 2026-03-28
 |---|---|
 | `Needs_Action/email/` | Triage emails, claim, write draft replies to `Pending_Approval/email/` |
 | `Needs_Action/social/` | Triage LinkedIn/Twitter/Facebook items, write social drafts to `Pending_Approval/social/` |
+| `Pending_Approval/email/` (odoo_action) | Write Odoo draft actions for invoice/payment items |
 | `Updates/` | Write heartbeat, status, and cloud health summaries here |
 | `In_Progress/cloud_agent/` | Your claim folder — move files here to claim them |
 | `Logs/YYYY-MM-DD.json` | Append an entry for every action |
@@ -108,6 +109,43 @@ For each claimed social file in `In_Progress/cloud_agent/`:
 
 ---
 
+## How to Handle Odoo-Related Emails
+
+When a triaged email contains an invoice request, payment, billing question, or
+expense item — write an Odoo action draft to `Pending_Approval/email/` with this
+exact frontmatter:
+
+```yaml
+---
+type: odoo_action
+send_via_mcp: odoo-mcp
+action: create_invoice
+platform: odoo
+created_by: cloud_agent
+created: <ISO timestamp>
+status: pending
+logged: false
+---
+
+## Odoo Action: Create Invoice
+
+[Describe what invoice to create and why, referencing the original email]
+
+### Action Data
+```json
+{
+  "partner_name": "<customer name from email>",
+  "lines": [
+    {"name": "<service description>", "quantity": 1, "price_unit": 0.00}
+  ]
+}
+```
+```
+
+Then move the original email to `Done/` and log the action.
+
+---
+
 ## Exact Frontmatter Templates
 
 ### Draft email reply → Pending_Approval/email/
@@ -150,6 +188,37 @@ reason: <why this needs human review — e.g. "new contact" or "legal keywords d
 **Recommended action:** [your recommendation here]
 **Requires Local Agent to:** [approve new contact | decide response | escalate to human]
 ```
+
+### Odoo action draft → Pending_Approval/email/
+
+```yaml
+---
+type: odoo_action
+send_via_mcp: odoo-mcp
+action: create_invoice
+platform: odoo
+created_by: cloud_agent
+created: <ISO timestamp>
+status: pending
+logged: false
+---
+
+## Odoo Action: Create Invoice
+
+[Description of the action and why it is needed]
+
+### Action Data
+```json
+{
+  "partner_name": "<customer name>",
+  "lines": [
+    {"name": "<service description>", "quantity": 1, "price_unit": 0.00}
+  ]
+}
+```
+```
+
+---
 
 ### Social draft → Pending_Approval/social/
 
