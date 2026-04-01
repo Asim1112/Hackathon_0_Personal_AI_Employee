@@ -151,15 +151,15 @@ uv sync
 
 ### Step 7 — Configure .env on VM
 ```bash
-cp .env.example .env   # if available, or create manually
-# Add to .env:
-# AGENT_ID=cloud_agent
-# GMAIL_ADDRESS=your-gmail@gmail.com
-# ODOO_URL=https://100.48.121.225
-# ODOO_DB=ai_employee
-# ODOO_USERNAME=admin
-# ODOO_PASSWORD=admin
-# ODOO_DB_PASSWORD=OdooSecure2026
+cat > .env << 'EOF'
+AGENT_ID=cloud_agent
+GMAIL_ADDRESS=your-gmail@gmail.com
+ODOO_URL=https://100.48.121.225
+ODOO_DB=ai_employee
+ODOO_USERNAME=admin
+ODOO_PASSWORD=admin
+ODOO_DB_PASSWORD=OdooSecure2026
+EOF
 ```
 
 ### Step 8 — Deploy Odoo Community 17
@@ -183,6 +183,7 @@ initialize the `ai_employee` database (Master Password: `OdooSecure2026`).
 
 ### Step 9 — Start agents with PM2
 ```bash
+# Note: if upgrading an existing install, check your current process names first with: pm2 status
 cd ~/Hackathon_0_Personal_AI_Employee/AI_Employee_Vault/platinum
 pm2 start cloud_orchestrator.py --name cloud-agent --interpreter uv -- run python
 pm2 start health_monitor.py     --name health-monitor --interpreter uv -- run python
