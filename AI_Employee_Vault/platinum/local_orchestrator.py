@@ -39,6 +39,7 @@ from email_sender import watch_approved as _email_watch_approved
 
 VAULT = Path(__file__).parent.resolve()
 load_dotenv(VAULT / ".env")
+sys.path.insert(0, str(VAULT))  # ensure whatsapp_watcher (same dir) is importable
 
 logging.basicConfig(
     level=logging.INFO,
@@ -109,6 +110,24 @@ def git_push(msg: str) -> None:
         log.info("git push: %s", msg)
     except Exception as e:
         log.warning("git push failed: %s", e)
+
+# ── WhatsApp watcher ──────────────────────────────────────────────────────────
+
+def _start_whatsapp_watcher() -> None:
+    """Start WhatsApp watcher if session exists. Local owns WhatsApp per spec."""
+    session_dir = VAULT / "whatsapp_session"
+    if not session_dir.exists():
+        log.warning(
+            "WhatsApp watcher skipped — no whatsapp_session/ found. "
+            "Run WhatsApp auth to enable: see LOCAL_CLAUDE.md"
+        )
+        return
+    from whatsapp_watcher import WhatsAppWatcher
+    WhatsAppWatcher(
+        vault_path=str(VAULT),
+        check_interval=int(os.getenv("WHATSAPP_INTERVAL", "60")),
+        needs_action_subdir="email",
+    ).run()
 
 # ── Cloud heartbeat check ─────────────────────────────────────────────────────
 
@@ -229,6 +248,13 @@ def main() -> None:
     # ── Daemon mode ────────────────────────────────────────────────────────────
     if args.now:
         run_claude()
+
+    # Background: WhatsApp watcher (Local owns WhatsApp session per spec)
+    threading.Thread(
+        target=_start_whatsapp_watcher,
+        name="WhatsAppWatcher",
+        daemon=True,
+    ).start()
 
     # Background: Approved/ watcher
     threading.Thread(
