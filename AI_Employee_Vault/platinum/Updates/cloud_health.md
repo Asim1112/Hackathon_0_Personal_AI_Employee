@@ -1,17 +1,17 @@
 ---
 agent: cloud_agent
-last_check: 2026-04-01T00:03:55.943591+00:00
+last_check: 2026-04-01T00:18:58.589187+00:00
 pm2_status: not_found
 pm2_restarts: 0
-disk_free_mb: 10994
+disk_free_mb: 10993
 overall: degraded
 ---
 
-# Cloud Agent Health — 2026-04-01T00:03:55.943591+00:00
+# Cloud Agent Health — 2026-04-01T00:18:58.589187+00:00
 
 | Check | Status |
 |---|---|
 | PM2 cloud-agent | ❌ not_found (restarts: 0) |
-| Disk free | ✅ 10994 MB free of 18770 MB |
+| Disk free | ✅ 10993 MB free of 18770 MB |
 
 *Updated every 5 min by health_monitor.py*
