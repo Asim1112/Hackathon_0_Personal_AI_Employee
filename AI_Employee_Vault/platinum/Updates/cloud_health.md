@@ -1,6 +1,6 @@
 ---
 agent: cloud_agent
-last_check: 2026-04-02T15:32:44.269672+00:00
+last_check: 2026-04-02T15:47:47.297978+00:00
 pm2_status: not_found
 pm2_restarts: 0
 disk_free_mb: 7565
@@ -8,7 +8,7 @@ odoo_status: healthy
 overall: degraded
 ---
 
-# Cloud Agent Health — 2026-04-02T15:32:44.269672+00:00
+# Cloud Agent Health — 2026-04-02T15:47:47.297978+00:00
 
 | Check | Status |
 |---|---|
