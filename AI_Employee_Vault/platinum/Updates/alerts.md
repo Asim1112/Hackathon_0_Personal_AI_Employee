@@ -1060,3 +1060,6 @@
 - [2026-04-02T17:53:13.615000+00:00] ALERT: cloud-agent PM2 status is 'not_found'
 - [2026-04-02T17:58:14.434681+00:00] ALERT: cloud-agent PM2 status is 'not_found'
 - [2026-04-02T18:03:15.257290+00:00] ALERT: cloud-agent PM2 status is 'not_found'
+- [2026-04-02T18:08:16.711208+00:00] ALERT: cloud-agent PM2 status is 'not_found'
+- [2026-04-02T18:13:17.530785+00:00] ALERT: cloud-agent PM2 status is 'not_found'
+- [2026-04-02T18:18:18.351700+00:00] ALERT: cloud-agent PM2 status is 'not_found'
