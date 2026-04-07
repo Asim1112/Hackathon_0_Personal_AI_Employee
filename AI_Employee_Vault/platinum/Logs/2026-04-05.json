@@ -1,0 +1,15 @@
+[
+  {
+    "timestamp": "2026-04-05T17:29:31.935751+00:00",
+    "action_type": "file_processed",
+    "actor": "local_agent",
+    "target": "ODOO_ACTION_2026-04-05_E2E_Test_Invoice_v3.md",
+    "parameters": {
+      "type": "odoo_action",
+      "file": "ODOO_ACTION_2026-04-05_E2E_Test_Invoice_v3.md"
+    },
+    "approval_status": "approved",
+    "approved_by": "human",
+    "result": "success"
+  }
+]
