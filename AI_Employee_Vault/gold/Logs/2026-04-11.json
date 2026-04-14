@@ -1,0 +1,62 @@
+[
+  {
+    "timestamp": "2026-04-11T20:00:29.154747Z",
+    "action_type": "error",
+    "source": "twitter_watcher",
+    "target": "mentions_poll",
+    "skill_used": null,
+    "approval_status": "not_required",
+    "result": "failure",
+    "notes": "402 Payment Required\nYour enrolled account [2034709463672750080] does not have any credits to fulfill this request."
+  },
+  {
+    "timestamp": "2026-04-11T20:00:30.689946Z",
+    "action_type": "error",
+    "source": "facebook_watcher",
+    "target": "page_messages",
+    "skill_used": null,
+    "approval_status": "not_required",
+    "result": "failure",
+    "notes": "Client error '403 Forbidden' for url 'https://graph.facebook.com/v19.0/990237767514098/conversations?access_token=EAAU32XB6EwwBRHjpC2p0u7F9yh3zoZB9clDIRmKYSQGQf6Vi9a6yHkepgN9XsNjfk3eJERfmWGGCmogLsx3ewDdRv40LXeZAPaZC3ZCbLuCPVWPjZAfUOclhLXzl4OKYdYSlbO2yH7vyJm4FhEIf8QzislOGToTw5mEVj82SZARYASZBl9geApHBF1hLxNvs9vHPt00X7W57ZCf3LCDhQLogYineMOtxVS1ZBxIvk6EwZD&fields=messages%7Bid%2Ccreated_time%2Cmessage%2Cfrom%7D&limit=10'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+  },
+  {
+    "timestamp": "2026-04-11T20:00:31.099120Z",
+    "action_type": "error",
+    "source": "facebook_watcher",
+    "target": "page_comments",
+    "skill_used": null,
+    "approval_status": "not_required",
+    "result": "failure",
+    "notes": "Client error '400 Bad Request' for url 'https://graph.facebook.com/v19.0/990237767514098/feed?access_token=EAAU32XB6EwwBRHjpC2p0u7F9yh3zoZB9clDIRmKYSQGQf6Vi9a6yHkepgN9XsNjfk3eJERfmWGGCmogLsx3ewDdRv40LXeZAPaZC3ZCbLuCPVWPjZAfUOclhLXzl4OKYdYSlbO2yH7vyJm4FhEIf8QzislOGToTw5mEVj82SZARYASZBl9geApHBF1hLxNvs9vHPt00X7W57ZCf3LCDhQLogYineMOtxVS1ZBxIvk6EwZD&fields=comments%7Bid%2Ccreated_time%2Cmessage%2Cfrom%7D&limit=5'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400"
+  },
+  {
+    "timestamp": "2026-04-11T20:46:58.586378Z",
+    "action_type": "error",
+    "source": "facebook_watcher",
+    "target": "page_messages",
+    "skill_used": null,
+    "approval_status": "not_required",
+    "result": "failure",
+    "notes": "Client error '403 Forbidden' for url 'https://graph.facebook.com/v19.0/990237767514098/conversations?access_token=EAAU32XB6EwwBRHjpC2p0u7F9yh3zoZB9clDIRmKYSQGQf6Vi9a6yHkepgN9XsNjfk3eJERfmWGGCmogLsx3ewDdRv40LXeZAPaZC3ZCbLuCPVWPjZAfUOclhLXzl4OKYdYSlbO2yH7vyJm4FhEIf8QzislOGToTw5mEVj82SZARYASZBl9geApHBF1hLxNvs9vHPt00X7W57ZCf3LCDhQLogYineMOtxVS1ZBxIvk6EwZD&fields=messages%7Bid%2Ccreated_time%2Cmessage%2Cfrom%7D&limit=10'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+  },
+  {
+    "timestamp": "2026-04-11T20:46:59.059985Z",
+    "action_type": "error",
+    "source": "facebook_watcher",
+    "target": "page_comments",
+    "skill_used": null,
+    "approval_status": "not_required",
+    "result": "failure",
+    "notes": "Client error '400 Bad Request' for url 'https://graph.facebook.com/v19.0/990237767514098/feed?access_token=EAAU32XB6EwwBRHjpC2p0u7F9yh3zoZB9clDIRmKYSQGQf6Vi9a6yHkepgN9XsNjfk3eJERfmWGGCmogLsx3ewDdRv40LXeZAPaZC3ZCbLuCPVWPjZAfUOclhLXzl4OKYdYSlbO2yH7vyJm4FhEIf8QzislOGToTw5mEVj82SZARYASZBl9geApHBF1hLxNvs9vHPt00X7W57ZCf3LCDhQLogYineMOtxVS1ZBxIvk6EwZD&fields=comments%7Bid%2Ccreated_time%2Cmessage%2Cfrom%7D&limit=5'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400"
+  },
+  {
+    "timestamp": "2026-04-11T20:46:59.376231Z",
+    "action_type": "error",
+    "source": "twitter_watcher",
+    "target": "mentions_poll",
+    "skill_used": null,
+    "approval_status": "not_required",
+    "result": "failure",
+    "notes": "402 Payment Required\nYour enrolled account [2034709463672750080] does not have any credits to fulfill this request."
+  }
+]

@@ -1,0 +1,759 @@
+ ---
+  Demo Video Recording Guide — Gold Tier Personal AI Employee
+
+  Who this guide is for: You — Asim — recording the Gold Tier demo video.
+  How to use it: Work through Parts A → B in order before you press Record. Keep Part F (Quick Reference Card) open on a second monitor or printed out during recording.
+  Prerequisite: All 5 MCP servers are now fully live with zero DRY_RUN mode. Every action you demo will hit the real APIs.
+
+  ---
+  Table of Contents
+
+  - #part-a--pre-recording-setup-checklist
+    - #a1--credentials--accounts
+    - #a2--software--tools
+    - #a3--screen-layout-setup
+    - #a4--vault-state-verification
+  - #part-b--opening-6-terminal-tabs
+  - #part-c--the-demo-recording-script
+  - #part-d--between-takes-reset-procedure
+  - #part-e--troubleshooting
+  - #part-f--quick-reference-card
+
+  ---
+  Part A — Pre-Recording Setup Checklist
+
+  Complete every item in this section before you open OBS or press Record. Skipping any item risks a live failure mid-take.
+
+  ---
+  A1 — Credentials & Accounts
+
+  The .env file is at: F:\Hackathon 0 Personal AI Employee\AI_Employee_Vault\gold\.env
+
+  ---
+  ✅ Twitter/X — 5 API Keys Required
+
+  Twitter uses OAuth 1.0a — you need keys for both your App and your specific user account. All 5 are required; the MCP server exits immediately if any are missing.
+
+  ┌─────────────────────────────┬────────────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
+  │         .env Field          │                 What It Is                 │                              Where to Find It                              │
+  ├─────────────────────────────┼────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ TWITTER_API_KEY             │ Your App's Consumer Key                    │ Twitter Developer Portal → Project → App → Keys and Tokens → Consumer Keys │
+  ├─────────────────────────────┼────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ TWITTER_API_SECRET          │ Your App's Consumer Secret                 │ Same page as above                                                         │
+  ├─────────────────────────────┼────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ TWITTER_ACCESS_TOKEN        │ Your account's Access Token                │ Same page → Authentication Tokens → Access Token and Secret                │
+  ├─────────────────────────────┼────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ TWITTER_ACCESS_TOKEN_SECRET │ Your account's Access Token Secret         │ Same page as above                                                         │
+  ├─────────────────────────────┼────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+  │ TWITTER_BEARER_TOKEN        │ App-level read token (used by the watcher) │ Same page → Bearer Token                                                   │
+  └─────────────────────────────┴────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
+
+  How to get them:
+  1. Go to developer.twitter.com and sign in with the account that will be posting
+  2. Open your Project → App → Keys and Tokens tab
+  3. If you haven't generated Access Token/Secret yet, click Generate under Authentication Tokens
+  4. Copy all 5 values into .env
+
+  ⚠️ Access Token type matters. Must be generated with Read and Write permission. To change: Developer Portal → App → Settings → User authentication settings → App
+  permissions → set to "Read and Write".
+
+  ---
+  ✅ Facebook — 2 Credentials Required
+
+  Facebook posting uses the Meta Graph API v19.0. You post to a Facebook Page (not a personal profile).
+
+  ┌───────────────────────┬────────────────────────────────────────────────────────┬─────────────────────────────────┐
+  │      .env Field       │                       What It Is                       │        Where to Find It         │
+  ├───────────────────────┼────────────────────────────────────────────────────────┼─────────────────────────────────┤
+  │ FACEBOOK_PAGE_ID      │ The numeric ID of your Facebook Page                   │ Facebook Page → About → Page ID │
+  ├───────────────────────┼────────────────────────────────────────────────────────┼─────────────────────────────────┤
+  │ FACEBOOK_ACCESS_TOKEN │ A Page Access Token with pages_manage_posts permission │ Graph API Explorer (see below)  │
+  └───────────────────────┴────────────────────────────────────────────────────────┴─────────────────────────────────┘
+
+  Getting a Page Access Token:
+  1. Go to Meta for Developers → Tools → Graph API Explorer
+  2. Select your App in the top-right dropdown
+  3. Click Generate Access Token → grant all pages permissions
+  4. In the left panel, change token type to Page Access Token and select your Page
+  5. For a demo, a short-lived token (1 hour) is fine — generate it 30 minutes before recording
+  6. Copy into FACEBOOK_ACCESS_TOKEN in .env
+
+  ---
+  ✅ Instagram — 1 Credential Required
+
+  Must be a Business or Creator account linked to your Facebook Page.
+
+  ┌──────────────────────┬───────────────────────────────────────────────────┬────────────────────────────────┐
+  │      .env Field      │                    What It Is                     │        Where to Find It        │
+  ├──────────────────────┼───────────────────────────────────────────────────┼────────────────────────────────┤
+  │ INSTAGRAM_ACCOUNT_ID │ The numeric ID of your Instagram Business account │ Graph API Explorer (see below) │
+  └──────────────────────┴───────────────────────────────────────────────────┴────────────────────────────────┘
+
+  Finding your Instagram Account ID:
+  In Graph API Explorer with your Page Access Token active, call:
+  GET /{your-page-id}?fields=instagram_business_account
+  The response contains "instagram_business_account": {"id": "17841..."} — that number is your ID.
+
+  ⚠️ Instagram posts require an image_url. For the demo, the Odoo and Twitter items are stronger HITL demonstrations.
+
+  ---
+  ✅ LinkedIn — 2 Credentials Required
+
+  LinkedIn is automated via Playwright browser automation — no API key needed.
+
+  ┌───────────────────┬──────────────────────────────────────────────────┐
+  │    .env Field     │                    What It Is                    │
+  ├───────────────────┼──────────────────────────────────────────────────┤
+  │ LINKEDIN_EMAIL    │ The email address you use to log into LinkedIn   │
+  ├───────────────────┼──────────────────────────────────────────────────┤
+  │ LINKEDIN_PASSWORD │ Your LinkedIn password                           │
+  ├───────────────────┼──────────────────────────────────────────────────┤
+  │ HEADLESS          │ Set to false so the browser is visible on camera │
+  └───────────────────┴──────────────────────────────────────────────────┘
+
+  For the demo: HEADLESS=false in .env makes the browser automation visible — dramatically more impressive to watch.
+
+  ⚠️ LinkedIn 2FA: Pre-run the MCP server once before recording to save .linkedin_session.json — the session is then reused and login is skipped during the demo.
+
+  ⚠️ Playwright install (first time only):
+  cd mcp_servers/linkedin-mcp
+  npx playwright install chromium
+
+  ---
+  ✅ Odoo — Docker + Accounting Module
+
+  ┌───────────────┬──────────────────────────┐
+  │  .env Field   │      Expected Value      │
+  ├───────────────┼──────────────────────────┤
+  │ ODOO_URL      │ http://localhost:8069    │
+  ├───────────────┼──────────────────────────┤
+  │ ODOO_DB       │ ai_employee              │
+  ├───────────────┼──────────────────────────┤
+  │ ODOO_USERNAME │ Your Odoo admin email    │
+  ├───────────────┼──────────────────────────┤
+  │ ODOO_PASSWORD │ Your Odoo admin password │
+  └───────────────┴──────────────────────────┘
+
+  Before recording, verify:
+  1. Docker Desktop is running — check system tray
+  2. Odoo container is up — open http://localhost:8069
+  3. Accounting module is installed — Odoo menu → look for Accounting/Invoicing. If missing: Apps → search "Accounting" → Install. The MCP will fail without this module.
+  4. Verify — navigate to Accounting → Customers → Invoices. Should load without errors.
+
+  ---
+  ✅ SMTP / Email — Gmail App Password
+
+  ┌─────────────┬─────────────────────────────────┐
+  │ .env Field  │         Expected Value          │
+  ├─────────────┼─────────────────────────────────┤
+  │ SMTP_HOST   │ smtp.gmail.com                  │
+  ├─────────────┼─────────────────────────────────┤
+  │ SMTP_PORT   │ 587                             │
+  ├─────────────┼─────────────────────────────────┤
+  │ SMTP_SECURE │ false                           │
+  ├─────────────┼─────────────────────────────────┤
+  │ SMTP_USER   │ Your Gmail address              │
+  ├─────────────┼─────────────────────────────────┤
+  │ SMTP_PASS   │ 16-character Gmail App Password │
+  ├─────────────┼─────────────────────────────────┤
+  │ SMTP_FROM   │ "Your Name <your@gmail.com>"    │
+  └─────────────┴─────────────────────────────────┘
+
+  Generating a Gmail App Password:
+  1. Google Account → Security → 2-Step Verification → App passwords
+  2. Select Mail / Windows Computer → Generate
+  3. Copy the 16-character password into SMTP_PASS in .env
+
+  ---
+  A2 — Software & Tools
+
+  - Node.js v18+ — verify: node --version
+  - npm dependencies — run once per MCP server:
+  cd mcp_servers/email-mcp && npm install
+  cd mcp_servers/twitter-mcp && npm install
+  cd mcp_servers/odoo-mcp && npm install
+  cd mcp_servers/facebook-instagram-mcp && npm install
+  cd mcp_servers/linkedin-mcp && npm install && npx playwright install chromium
+  - Python 3.11+ — verify: python --version
+  - uv — verify: uv --version. Install: pip install uv. Then: uv sync
+  - Claude Code CLI — verify: claude --version. Install: npm install -g @anthropic/claude-code
+  - Docker Desktop running — check system tray. Odoo at http://localhost:8069
+  - Obsidian — pointing at the gold vault folder, Dashboard.md visible
+  - OBS Studio — recommended (free, no watermark, multi-source capture). Settings: 1920×1080, 30fps, desktop audio on
+  - Windows Terminal — font size 18pt minimum (Settings → Profiles → Defaults → Appearance → Font size)
+
+  ---
+  A3 — Screen Layout Setup
+
+  Recommended Dual-Window Layout
+
+  ┌─────────────────────────────┬─────────────────────────────────┐
+  │                             │                                 │
+  │   OBSIDIAN — Reading View   │   WINDOWS TERMINAL              │
+  │   Dashboard.md              │                                 │
+  │   (or current vault file)   │   [Tab 1] Email MCP             │
+  │                             │   [Tab 2] Twitter MCP           │
+  │   Width: ~45% of screen     │   [Tab 3] Odoo MCP              │
+  │                             │   [Tab 4] Facebook/IG MCP       │
+  │                             │   [Tab 5] LinkedIn MCP          │
+  │                             │   [Tab 6] Orchestrator          │
+  │                             │                                 │
+  │                             │   Width: ~55% of screen         │
+  └─────────────────────────────┴─────────────────────────────────┘
+
+  Step-by-step:
+  1. Open Obsidian → drag to left 45% → press Ctrl+Shift+E for Reading View → open Dashboard.md
+  2. Open Windows Terminal → drag to right 55%
+  3. Create 6 tabs (Ctrl+Shift+T × 6) → right-click to rename each
+  4. Navigate every tab to vault root:
+  cd "F:\Hackathon 0 Personal AI Employee\AI_Employee_Vault\gold"
+  5. Obsidian font size: Ctrl+= to zoom in to minimum 16pt
+
+  ---
+  A4 — Vault State Verification
+
+  Step 1 — Run the Reset
+
+  cd "F:\Hackathon 0 Personal AI Employee\AI_Employee_Vault\gold"
+  uv run python reset_demo.py
+
+  Clears Needs_Action/, Inbox/, Pending_Approval/, Approved/ → archives stale files → writes 5 fresh demo files → resets Dashboard.md. Does NOT touch Done/, Logs/, or
+  Briefings/.
+
+  Step 2 — Generate the CEO Briefing (first time only)
+
+  uv run python orchestrator.py --briefing
+
+  Takes 2–3 minutes. Survives all subsequent resets — run it once.
+
+  Step 3 — State Check
+
+  uv run python -c "
+  from pathlib import Path
+  v = Path('.')
+  checks = [
+    ('Needs_Action has 5 files',    lambda: len(list((v/'Needs_Action').glob('*.md'))) == 5),
+    ('Inbox is empty',              lambda: len(list((v/'Inbox').glob('*.md'))) == 0),
+    ('Pending_Approval is empty',   lambda: len(list((v/'Pending_Approval').glob('*.md'))) == 0),
+    ('Approved is empty',           lambda: len(list((v/'Approved').glob('*.md'))) == 0),
+    ('Done has history',            lambda: len(list((v/'Done').glob('*.md'))) > 0),
+    ('Logs has audit files',        lambda: len(list((v/'Logs').glob('*.json'))) > 0),
+    ('Briefings has CEO briefing',  lambda: len(list((v/'Briefings').glob('*.md'))) > 0),
+    ('Dashboard.md exists',         lambda: (v/'Dashboard.md').exists()),
+    ('CLAUDE.md exists',            lambda: (v/'CLAUDE.md').exists()),
+  ]
+  all_ok = True
+  for name, fn in checks:
+      r = fn()
+      print('[OK]' if r else '[!!]', name)
+      if not r: all_ok = False
+  print()
+  print('READY TO RECORD' if all_ok else 'NOT READY — fix issues above')
+  "
+
+  ✅ Perfect GO Output
+
+  [OK] Needs_Action has 5 files
+  [OK] Inbox is empty
+  [OK] Pending_Approval is empty
+  [OK] Approved is empty
+  [OK] Done has history
+  [OK] Logs has audit files
+  [OK] Briefings has CEO briefing
+  [OK] Dashboard.md exists
+  [OK] CLAUDE.md exists
+
+  READY TO RECORD
+
+  ❌ NOT READY Output (with fixes)
+
+  [!!] Needs_Action has 5 files     → Fix: uv run python reset_demo.py
+  [!!] Briefings has CEO briefing   → Fix: uv run python orchestrator.py --briefing
+
+  ---
+  Part B — Opening 6 Terminal Tabs
+
+  Open all 6 tabs before pressing Record. All commands run from the vault root.
+
+  ---
+  Tab 1 — Email MCP
+
+  node mcp_servers/email-mcp/index.js
+
+  Watches Approved/ for DRAFT_REPLY_*.md files. Sends via Gmail SMTP. Moves to Done/ with message ID.
+
+  Successful startup:
+  [email-mcp] INFO  Silver AI Employee · Email MCP Server [LIVE]
+  [email-mcp] INFO  SMTP  : smtp.gmail.com:587 (user: your@gmail.com)
+  [email-mcp] INFO  Watching /Approved — waiting for approved email drafts…
+
+  If fails: smtp_user / smtp_pass not set → fill SMTP credentials in .env. Cannot find module → npm install in mcp_servers/email-mcp/.
+
+  ---
+  Tab 2 — Twitter MCP
+
+  node mcp_servers/twitter-mcp/index.js
+
+  Watches Approved/ for type: social_draft + send_via_mcp: twitter-mcp. Posts via Twitter API v2. Supports single tweets and threads.
+
+  Successful startup:
+  [twitter-mcp] INFO  Gold AI Employee · Twitter MCP Server [LIVE]
+  [twitter-mcp] INFO  Watching /Approved — waiting for approved tweet drafts…
+
+  If fails: Missing Twitter credentials → fill all 4 OAuth keys in .env. Cannot find module 'twitter-api-v2' → npm install.
+
+  ---
+  Tab 3 — Odoo MCP
+
+  node mcp_servers/odoo-mcp/index.js
+
+  Watches Approved/ for type: odoo_action + send_via_mcp: odoo-mcp. Connects to Odoo via JSON-RPC. Handles create_invoice, confirm_invoice, sync_accounting.
+
+  Successful startup:
+  [odoo-mcp] INFO    Odoo reachable — server version: 17.0
+  [odoo-mcp] INFO    Authenticated as uid: 2 (db: ai_employee)
+  [odoo-mcp] INFO    Gold AI Employee · Odoo MCP Server [LIVE]
+  [odoo-mcp] INFO    Watching /Approved — waiting for approved Odoo actions…
+
+  If fails: Cannot connect to Odoo → start Docker. Authentication failed → wrong ODOO_PASSWORD.
+
+  ---
+  Tab 4 — Facebook/Instagram MCP
+
+  node mcp_servers/facebook-instagram-mcp/index.js
+
+  Watches Approved/ for type: social_post + send_via_mcp: facebook-instagram-mcp. Posts to Facebook Page feed via Meta Graph API v19.0. Instagram uses two-step
+  container/publish flow.
+
+  Successful startup:
+  [fb-ig-mcp] INFO  Gold AI Employee · Facebook & Instagram MCP Server [LIVE]
+  [fb-ig-mcp] INFO  FB Page   : 990237767514098
+  [fb-ig-mcp] INFO  Watching /Approved — waiting for approved FB/IG post drafts…
+
+  If fails: FACEBOOK_ACCESS_TOKEN not set → fill token in .env.
+
+  ---
+  Tab 5 — LinkedIn MCP
+
+  node mcp_servers/linkedin-mcp/index.js
+
+  Watches Approved/ for type: linkedin_draft + send_via_mcp: linkedin-mcp. Launches Chromium via Playwright, logs into LinkedIn, clicks "Start a post", types content,
+  clicks Post.
+
+  Successful startup:
+  [linkedin-mcp] INFO    AI Employee LinkedIn MCP Server — Gold Tier [LIVE]
+  [linkedin-mcp] INFO    Headless mode: false
+  [linkedin-mcp] INFO    Watching for approved LinkedIn drafts in: ...\gold\Approved
+
+  If fails: Executable doesn't exist → npx playwright install chromium. Missing LINKEDIN_EMAIL → fill credentials in .env.
+
+  ---
+  Tab 6 — Orchestrator (Ready but NOT yet running)
+
+  Type this command but do not press Enter — you press Enter on camera in Scene 4:
+
+  uv run python orchestrator.py --cron
+
+  When run, calls claude --dangerously-skip-permissions --print with the full daily workflow: Daily Briefing → Gmail Triage → WhatsApp Triage → LinkedIn Draft → Twitter
+  Draft → Facebook/Instagram → Odoo Accounting → Reasoning Loop → Process Needs Action → Audit Logger → Update Dashboard → TASK_COMPLETE.
+
+  ---
+  Part C — The Demo Recording Script
+
+  How to use: Read SHOW/SAY/DO blocks before each scene. SAY blocks are written to be read aloud verbatim.
+
+  ---
+  Scene 1 — Opening Shot: The Vault Nerve Centre
+
+  Duration: ~45 seconds | SHOW: Obsidian Reading View, Dashboard.md, System Status table + queue visible
+
+  SAY:
+  "This is the Gold Tier Personal AI Employee. What you're looking at is the Dashboard — the nerve centre of the system. Everything the AI has done, is doing, and needs to
+   do is tracked here in real time.
+
+  Right now, the queue has five items waiting: an email from an existing client with a board meeting deadline, a new LinkedIn contact who could be a high-value lead, a
+  Twitter post request, a Facebook business page announcement, and — the most interesting one — an overdue invoice worth £2,400 that needs to be created in Odoo.
+
+  None of these have been touched yet. The AI Employee is waiting for its next processing cycle to begin. Let me show you what's in the queue first."
+
+  ---
+  Scene 2 — Show the Incoming Queue
+
+  Duration: ~2 minutes | SHOW: Obsidian sidebar, Needs_Action/ folder, click each file
+
+  File 1 — EMAIL: Click EMAIL_<date>_AI_Project_Milestone_demo01.md
+  "The first item is an inbound email. Sarah Johnson from TechCorp Ltd — an existing client — is asking for a project status update before her board meeting on Friday. She
+   has three specific questions about the AI integration project. High priority because of the Friday deadline. The AI will draft a professional reply covering all three
+  points."
+
+  File 2 — LINKEDIN: Click LINKEDIN_<date>_enterprise_automation_enquiry_demo02.md
+  "Item two is a LinkedIn opportunity. Marcus Webb, Chief Operating Officer at Apex Advisory Partners — a 45-person professional services firm — has described three
+  specific pain points that map exactly to our service offering. Notice the flag: is_new_contact: true. That means no reply can be sent until a human has approved it — the
+   new contact rule kicks in automatically."
+
+  File 3 — TWITTER: Click TWITTER_<date>_post_request_demo03.md
+  "Item three is a Twitter post request. An internal content task — draft a standalone tweet about the system's capabilities. The AI will draft this and park it in Pending
+   Approval. It never posts to social media without explicit human sign-off."
+
+  File 4 — FACEBOOK: Click FACEBOOK_<date>_post_request_demo04.md
+  "Item four — a Facebook Business Page post. Same pattern — goes to Pending Approval before anything touches the real platform."
+
+  File 5 — ODOO (highlight this one): Click ODOO_<date>_overdue_invoice_INV-2026-010.md
+  "And the fifth item — this is the one I want you to pay attention to. Meridian Consulting Group. Invoice INV-2026-010. Amount: two thousand four hundred pounds. Overdue
+  by 31 days. The Odoo watcher detected this and wrote it into the queue automatically. Both the invoice creation and the payment chase email go to Pending Approval first
+  — the amount is well above the £50 financial threshold. No money moves, no invoice is created, until a human says yes."
+
+  ---
+  Scene 3 — Show the MCP Servers Running
+
+  Duration: ~45 seconds | SHOW: Terminal, pan through Tabs 1–5 (3-second pause on each)
+
+  SAY:
+  "Before I trigger the AI cycle, let me show you what's running in the background. Five MCP servers — each one connected to a real external platform and watching the
+  Approved folder for work to do.
+
+  Tab one — the email MCP — connected to Gmail SMTP, ready to fire the moment an email draft gets approved. Tab two — Twitter — connected to the live Twitter API. Tab
+  three — Odoo — authenticated to the local Odoo ERP instance running in Docker. Tab four — Facebook and Instagram — connected to the Meta Graph API. Tab five — LinkedIn —
+   Playwright browser automation, credentials loaded, ready to open a real browser and post.
+
+  None of these will do anything until a human moves a file into the Approved folder. That's the guarantee."
+
+  ---
+  Scene 4 — Trigger the Orchestrator
+
+  Duration: ~3–4 minutes | SHOW: Tab 6, command already typed, press Enter
+
+  SAY (before pressing Enter):
+  "This is the moment. I'm going to trigger the daily processing cycle. This command calls Claude Code with the full workflow prompt. Watch what happens."
+
+  [Press Enter]
+
+  SAY (as output scrolls — speak slowly, leave pauses):
+  "Claude is now reading the vault — the Company Handbook, the Business Goals, the Dashboard. Working through all five items in order, applying the right specialist skill
+  to each one.
+
+  You can see the skill routing happening in real time. Email item — SKILL_Gmail_Triage. LinkedIn opportunity — SKILL_LinkedIn_Draft. Twitter request —
+  SKILL_Twitter_Draft. Facebook — SKILL_Facebook_Instagram. And the Odoo alert — SKILL_Odoo_Accounting.
+
+  Claude isn't a generalist here — it's using purpose-built skills for each channel, each with its own rules, templates, and escalation logic from the Company Handbook."
+
+  SAY (when queue empties):
+  "And when the queue is empty, the system writes its completion signal — TASK_COMPLETE — and exits. Clean, auditable, deterministic."
+
+  ---
+  Scene 5 — The HITL Moment ⭐ (strongest visual in the demo)
+
+  Duration: ~90 seconds | SHOW: Obsidian → Pending_Approval/ folder
+
+  DO: Expand Pending_Approval/ — show all 5+ files Claude generated.
+
+  SAY:
+  "Claude has processed all five items. But nothing has been sent to the outside world yet. Every external action is sitting right here in Pending Approval — waiting for a
+   human decision. This folder is the mandatory approval gate. If I never open it, nothing ever happens."
+
+  DO: Open the Odoo invoice file (ODOO_REVIEW_Invoice_Meridian_Consulting_<date>.md). Scroll slowly.
+
+  SAY:
+  "Let me open the Odoo invoice action. You can see exactly what Claude drafted: Meridian Consulting Group, £2,400, the line item, the action type — create invoice. And
+  right here in the frontmatter: status: pending, send_via_mcp: odoo-mcp. The MCP server will read these exact values when the file arrives in Approved.
+
+  This is the moment where the human decides. I've reviewed it. It looks correct. I'm going to approve it."
+
+  DO: Move the Odoo file from Pending_Approval/ to Approved/ (Windows Explorer drag, or Obsidian file manager).
+
+  SAY: "Watch Tab 3."
+
+  DO: Switch immediately to Tab 3 — Odoo MCP.
+
+  SAY: (pause 3–5 seconds — let MCP output appear on screen first)
+  "There it is. The MCP server detected the file the moment it landed in Approved. It's connecting to Odoo right now — authenticating, calling the JSON-RPC API, creating
+  the invoice record in the live ERP system. And it's done. Invoice created. File moved to Done with a timestamp and the Odoo record ID."
+
+  ---
+  Scene 6 — Show the Live Result
+
+  Duration: ~45 seconds | SHOW: Browser → http://localhost:8069
+
+  DO: Navigate to Accounting → Customers → Invoices. The Meridian Consulting Group invoice should be at the top.
+
+  SAY:
+  "This is Odoo — the real ERP system, running locally in Docker. And here's the invoice. Meridian Consulting Group. £2,400. Created seconds ago — not in a test
+  environment, not in a sandbox, not simulated. The AI Employee just created a real accounting record in a real ERP system.
+
+  This is what live looks like."
+
+  ---
+  Scene 7 — Repeat HITL for Remaining Items
+
+  Duration: ~60 seconds | SHOW: Obsidian → Pending_Approval/, then Tab 2
+
+  DO: Open Twitter draft, show content, move to Approved/, switch to Tab 2.
+
+  SAY:
+  "Let me show you one more. The Twitter draft — here it is in Pending Approval. Claude drafted this tweet, counted the characters, added the right hashtags. I'm moving it
+   to Approved now.
+
+  (pause for MCP output)
+
+  And there it is — posted to the real Twitter account, tweet ID logged, file moved to Done. Same pattern. Every channel. Every time.
+
+  The LinkedIn approval would open a real Chromium browser, log into LinkedIn with Playwright, and post. The Facebook approval would call the Meta Graph API. The email
+  approval would trigger Gmail SMTP. Same HITL gate — different platform, different MCP — but the approval workflow never changes."
+
+  ---
+  Scene 8 — The Audit Log
+
+  Duration: ~60 seconds | SHOW: Obsidian → Logs/ → most recent .json file
+
+  DO: Scroll slowly. Find the Odoo entry.
+
+  SAY:
+  "Every single action this system takes is written to a structured JSON audit log. One file per day. Let me read you one entry in full."
+
+  Read aloud:
+  "Timestamp: 2026-03-26 at 08:48 UTC. Action type: odoo draft created. Actor: claude code. Target: the Odoo review file. Skill used: SKILL_Odoo_Accounting. Approval
+  status: pending. Result: escalated. Notes: overdue invoice INV-2026-010, Meridian Consulting Group, £2,400, 31 days overdue — create invoice action written to Pending
+  Approval. Amount above the £50 threshold, HITL rule applied."
+
+  SAY:
+  "Eight fields. Every action. Who did it, what skill was used, what the approval status was, and what happened. Nothing in this system goes unrecorded. If something went
+  wrong two weeks ago and you needed to trace it — every step is here."
+
+  ---
+  Scene 9 — The CEO Briefing (Bonus Wow Moment)
+
+  Duration: ~60 seconds | SHOW: Obsidian → Briefings/CEO_BRIEFING_<date>.md
+
+  DO: Scroll slowly through each section. Pause 3–4 seconds per section.
+
+  SAY:
+  "And finally — every Sunday at eleven PM, the system generates this. The CEO Briefing.
+
+  (scroll Revenue section) Revenue this week versus the £2,500 weekly target. Outstanding invoices. Overdue items flagged with the number of days.
+
+  (scroll Social Media section) Social media activity across all five channels. Posts published, drafts waiting for approval.
+
+  (scroll Recommended Actions) And at the bottom — proactive recommendations. Not just a report of what happened. Suggestions for what to do next. Chase this client.
+  Review this subscription. Follow up on this lead before the window closes.
+
+  A business owner receives this on Monday morning before they've had their first coffee. Revenue versus target. Overdue invoices. SLA breaches. Three specific actions to
+  take. Zero effort from the human. That's the Gold Tier AI Employee."
+
+  ---
+  Scene 10 — The Architecture Close
+
+  Duration: ~45 seconds | SHOW: Obsidian → CLAUDE.md → scroll to Folder Structure
+
+  SAY:
+  "Let me close with the architecture. Six watchers monitoring five channels simultaneously — Email, WhatsApp, LinkedIn, Twitter, Facebook, and Odoo ERP. Every incoming
+  item lands in a structured Markdown file in the Needs Action queue.
+
+  Claude Code acts as the reasoning layer — reading the queue, applying thirteen specialist skills, and routing each item to the right output. No external action is ever
+  taken directly. Everything sensitive goes to Pending Approval first.
+
+  When a human approves, one of five MCP servers fires — connected to a real platform, executing the real action, and writing the result to the audit log.
+
+  Full JSON audit trail. Weekly CEO briefing. Human approval at every external action point. This is the Gold Tier Personal AI Employee."
+
+  ---
+  Part D — Between-Takes Reset Procedure
+
+  Total time: under 30 seconds.
+
+  Step 1 — Stop all MCP servers (10 sec)
+
+  Click each of Tabs 1–5 and press Ctrl+C.
+
+  Step 2 — Reset the vault (5 sec)
+
+  uv run python reset_demo.py
+
+  Step 3 — Restart all MCP servers (10 sec)
+
+  In each tab, press ↑ then Enter to re-run the previous command.
+
+  Step 4 — Verify (5 sec)
+
+  Check the [OK] lines at end of reset output. All green = ready.
+
+  Step 5 — Reload Dashboard in Obsidian
+
+  Close and reopen Dashboard.md.
+
+  Notes:
+  - ✅ CEO Briefing survives every reset — never needs to be regenerated
+  - ✅ Done/ and Logs/ are untouched
+  - ⚠️ If Odoo already has the invoice from a previous take: Accounting → Invoices → open → Action → Delete. Or use Twitter/Facebook as the HITL moment instead — no
+  cleanup needed.
+
+  ---
+  Part E — Troubleshooting
+
+  MCP Server Fails to Start
+
+  ┌────────────────────────────────────────────────────────┬────────────────────────────┬──────────────────────────────────────────────────────┐
+  │                         Error                          │           Cause            │                         Fix                          │
+  ├────────────────────────────────────────────────────────┼────────────────────────────┼──────────────────────────────────────────────────────┤
+  │ Cannot find module 'xxx'                               │ npm not installed          │ cd mcp_servers/<name>-mcp && npm install             │
+  ├────────────────────────────────────────────────────────┼────────────────────────────┼──────────────────────────────────────────────────────┤
+  │ Missing Twitter credentials                            │ TWITTER_* env vars blank   │ Fill all 5 Twitter keys in .env                      │
+  ├────────────────────────────────────────────────────────┼────────────────────────────┼──────────────────────────────────────────────────────┤
+  │ smtp_user / smtp_pass not set                          │ SMTP blank                 │ Fill SMTP credentials in .env                        │
+  ├────────────────────────────────────────────────────────┼────────────────────────────┼──────────────────────────────────────────────────────┤
+  │ Cannot connect to Odoo                                 │ Docker not running         │ Start Docker Desktop → start Odoo stack              │
+  ├────────────────────────────────────────────────────────┼────────────────────────────┼──────────────────────────────────────────────────────┤
+  │ FACEBOOK_ACCESS_TOKEN not set                          │ Facebook token blank       │ Fill FACEBOOK_ACCESS_TOKEN in .env                   │
+  ├────────────────────────────────────────────────────────┼────────────────────────────┼──────────────────────────────────────────────────────┤
+  │ Missing required environment variables: LINKEDIN_EMAIL │ LinkedIn credentials blank │ Fill both LinkedIn fields in .env                    │
+  ├────────────────────────────────────────────────────────┼────────────────────────────┼──────────────────────────────────────────────────────┤
+  │ Exits instantly, no output                             │ Node.js not installed      │ node --version must be v18+. Install from nodejs.org │
+  └────────────────────────────────────────────────────────┴────────────────────────────┴──────────────────────────────────────────────────────┘
+
+  Twitter Post Fails
+
+  ┌──────────────────────────┬───────────────────────────┬───────────────────────────────────────────────────────────┐
+  │          Error           │           Cause           │                            Fix                            │
+  ├──────────────────────────┼───────────────────────────┼───────────────────────────────────────────────────────────┤
+  │ 403 Forbidden            │ Access Token is Read-only │ Regenerate with Read+Write permission in Developer Portal │
+  ├──────────────────────────┼───────────────────────────┼───────────────────────────────────────────────────────────┤
+  │ Rate limit exceeded      │ Too many calls            │ Wait 15 minutes                                           │
+  ├──────────────────────────┼───────────────────────────┼───────────────────────────────────────────────────────────┤
+  │ Invalid or expired token │ Token expired             │ Regenerate Access Token and Secret                        │
+  └──────────────────────────┴───────────────────────────┴───────────────────────────────────────────────────────────┘
+
+  LinkedIn MCP Fails
+
+  Error: Executable doesn't exist
+  Cause: Chromium not installed
+  Fix: npx playwright install chromium
+  ────────────────────────────────────────
+  Error: Browser stops at 2FA screen
+  Cause: 2FA blocking login
+  Fix: Pre-run MCP once to save session file, OR complete 2FA manually in the browser (session saves automatically)
+  ────────────────────────────────────────
+  Error: Login OK but post fails
+  Cause: LinkedIn changed selectors
+  Fix: Check if post editor CSS selectors still match
+
+  Facebook/Instagram Post Fails
+
+  ┌─────────────────────────────────┬────────────────────────────┬────────────────────────────────────────────────────────────────────┐
+  │              Error              │           Cause            │                                Fix                                 │
+  ├─────────────────────────────────┼────────────────────────────┼────────────────────────────────────────────────────────────────────┤
+  │ (#190) Access token has expired │ Token expired              │ Generate new token in Graph API Explorer, update .env, restart MCP │
+  ├─────────────────────────────────┼────────────────────────────┼────────────────────────────────────────────────────────────────────┤
+  │ (#200) hasn't authorized        │ Missing pages_manage_posts │ Re-generate token with that permission checked                     │
+  ├─────────────────────────────────┼────────────────────────────┼────────────────────────────────────────────────────────────────────┤
+  │ Instagram requires an image     │ No image_url in file       │ Use Facebook post for demo — no image required                     │
+  └─────────────────────────────────┴────────────────────────────┴────────────────────────────────────────────────────────────────────┘
+
+  Odoo Connection Fails
+
+  ┌──────────────────────────────────────────────────┬──────────────────────┬─────────────────────────────────────────────────────────────────────────┐
+  │                      Error                       │        Cause         │                                   Fix                                   │
+  ├──────────────────────────────────────────────────┼──────────────────────┼─────────────────────────────────────────────────────────────────────────┤
+  │ ECONNREFUSED                                     │ Docker not running   │ Start Odoo stack in Docker Desktop, wait 60 seconds                     │
+  ├──────────────────────────────────────────────────┼──────────────────────┼─────────────────────────────────────────────────────────────────────────┤
+  │ Authentication failed                            │ Wrong credentials    │ Log into http://localhost:8069 manually to verify. Fix .env.            │
+  ├──────────────────────────────────────────────────┼──────────────────────┼─────────────────────────────────────────────────────────────────────────┤
+  │ The Accounting module is not installed           │ Module missing       │ Odoo → Apps → search "Accounting" → Install                             │
+  ├──────────────────────────────────────────────────┼──────────────────────┼─────────────────────────────────────────────────────────────────────────┤
+  │ action data missing required field: partner_name │ Malformed JSON block │ Check ```json ``` block in the approved file has partner_name and lines │
+  └──────────────────────────────────────────────────┴──────────────────────┴─────────────────────────────────────────────────────────────────────────┘
+
+  Orchestrator Stops Mid-Run
+
+  1. Check terminal output — it will show which skill was running
+  2. Check Logs/<today>.json — find the last logged entry
+  3. Check Needs_Action/ — unprocessed files are still there
+  4. Fix: uv run python reset_demo.py then uv run python orchestrator.py --cron
+
+  Files Not Moving After Approval
+
+  1. MCP not running — check terminal tab, restart if crashed
+  2. Wrong folder — files must be in Approved/ root, not a subfolder
+  3. Wrong frontmatter — type: and send_via_mcp: must match exactly (see CLAUDE.md cheat sheet)
+  4. Windows BOM encoding — PowerShell utf8 adds BOM, breaks YAML parser (type becomes type=?). Use Python or VS Code (LF, no BOM) to create/edit files
+  5. chokidar delay — wait 2–5 seconds after moving file before assuming it failed
+
+  ---
+  Part F — Quick Reference Card
+
+  Print this page or keep it open on a second monitor during recording.
+
+  5 MCP Start Commands
+
+  node mcp_servers/email-mcp/index.js
+  node mcp_servers/twitter-mcp/index.js
+  node mcp_servers/odoo-mcp/index.js
+  node mcp_servers/facebook-instagram-mcp/index.js
+  node mcp_servers/linkedin-mcp/index.js
+
+  Key Commands
+
+  uv run python reset_demo.py                  # Reset vault between takes
+  uv run python orchestrator.py --cron         # Trigger daily Claude cycle (demo)
+  uv run python orchestrator.py --briefing     # Generate CEO Briefing (one-off)
+  uv run python orchestrator.py                # Daemon mode (continuous + scheduled)
+
+  State Check Command
+
+  uv run python -c "
+  from pathlib import Path
+  v = Path('.')
+  checks = [
+    ('Needs_Action has 5 files',    lambda: len(list((v/'Needs_Action').glob('*.md'))) == 5),
+    ('Inbox is empty',              lambda: len(list((v/'Inbox').glob('*.md'))) == 0),
+    ('Pending_Approval is empty',   lambda: len(list((v/'Pending_Approval').glob('*.md'))) == 0),
+    ('Approved is empty',           lambda: len(list((v/'Approved').glob('*.md'))) == 0),
+    ('Briefings has CEO briefing',  lambda: len(list((v/'Briefings').glob('*.md'))) > 0),
+  ]
+  all_ok = True
+  for name, fn in checks:
+      r = fn()
+      print('[OK]' if r else '[!!]', name)
+      if not r: all_ok = False
+  print()
+  print('READY TO RECORD' if all_ok else 'NOT READY — fix issues above')
+  "
+
+  .env Key Groups (Field Names Only)
+
+  Twitter/X (5 keys): TWITTER_API_KEY · TWITTER_API_SECRET · TWITTER_ACCESS_TOKEN · TWITTER_ACCESS_TOKEN_SECRET · TWITTER_BEARER_TOKEN
+
+  Facebook & Instagram (3 keys): FACEBOOK_PAGE_ID · FACEBOOK_ACCESS_TOKEN · INSTAGRAM_ACCOUNT_ID
+
+  LinkedIn (3 keys): LINKEDIN_EMAIL · LINKEDIN_PASSWORD · HEADLESS
+
+  Odoo (4 keys): ODOO_URL · ODOO_DB · ODOO_USERNAME · ODOO_PASSWORD
+
+  SMTP / Email (6 keys): SMTP_HOST · SMTP_PORT · SMTP_SECURE · SMTP_USER · SMTP_PASS · SMTP_FROM
+
+  10-Word Scene Reminders
+
+  ┌───────────────────┬───────────────────────────────────────────────────────────────┐
+  │       Scene       │                           Reminder                            │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 1 — Dashboard     │ Show Dashboard, read queue, explain what AI will do           │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 2 — Queue         │ Open all 5 files, emphasise Odoo overdue invoice              │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 3 — MCPs          │ Pan tabs, five servers live, watching Approved folder         │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 4 — Orchestrator  │ Press Enter, watch skills route, wait TASK_COMPLETE           │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 5 — HITL ⭐       │ Open Odoo draft, approve it, watch MCP fire live              │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 6 — Live Result   │ Show Odoo invoice created in real ERP system                  │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 7 — More HITL     │ Approve Twitter, show tweet posted, pattern repeats           │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 8 — Audit Log     │ Open JSON log, read one full entry, all 8 fields              │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 9 — CEO Briefing  │ Scroll briefing, revenue target, recommendations, zero effort │
+  ├───────────────────┼───────────────────────────────────────────────────────────────┤
+  │ 10 — Architecture │ Open CLAUDE.md diagram, deliver closing architecture line     │
+  └───────────────────┴───────────────────────────────────────────────────────────────┘
+
+  ---
+  Generated by Claude Code — Gold Tier AI Employee v3.0

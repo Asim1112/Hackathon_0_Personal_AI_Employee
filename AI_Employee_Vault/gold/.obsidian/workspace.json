@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "fed38b5059f9d84f",
+        "id": "936d3ef9a601727d",
         "type": "tabs",
         "children": [
           {
-            "id": "ea9b558631394f23",
+            "id": "7ed222cd668c9a2d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Logs/README.md",
+                "file": "Pending_Approval/NEW_CONTACT_REVIEW_Marcus_Webb_LinkedIn_2026-04-14.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "NEW_CONTACT_REVIEW_Marcus_Webb_LinkedIn_2026-04-14"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 313.5086555480957
+    "width": 558.5086555480957
   },
   "right": {
     "id": "70f7051bb4d1b8db",
@@ -183,44 +183,44 @@
       "bases:Create new base": false
     }
   },
-  "active": "ea9b558631394f23",
+  "active": "7ed222cd668c9a2d",
   "lastOpenFiles": [
-    "Inbox/DRAFT_REPLY_Overdue_Invoice_Meridian_Consulting_2026-03-26.md",
-    "Done/DRAFT_REPLY_Q2_AI_Project_Milestone_2026-03-26.md",
-    "Rejected/DRAFT_REPLY_Overdue_Invoice_Meridian_Consulting_2026-03-26.md",
-    "Approved/DRAFT_REPLY_Q2_AI_Project_Milestone_2026-03-26.md",
-    "Approved/DRAFT_REPLY_Overdue_Invoice_Meridian_Consulting_2026-03-26.md",
-    "Approved/BRIEFING_2026-03-26.md",
-    "Done/FACEBOOK_DRAFT_AI_Employee_Professional_Services_2026-03-26.md",
-    "Done/ODOO_REVIEW_Invoice_Meridian_Consulting_2026-03-26.md",
-    "Done/LINKEDIN_DRAFT_Enterprise_Automation_Consulting_2026-03-26.md",
-    "Done/TWITTER_DRAFT_AI_Employee_Capabilities_2026-03-26.md",
-    "Approved/TWITTER_DRAFT_AI_Employee_Capabilities_2026-03-26.md",
-    "Approved/ODOO_REVIEW_Invoice_Meridian_Consulting_2026-03-26.md",
-    "Approved/NEW_CONTACT_REVIEW_Marcus_Webb_LinkedIn_2026-03-26.md",
-    "Approved/LINKEDIN_DRAFT_Enterprise_Automation_Consulting_2026-03-26.md",
-    "Approved/FACEBOOK_DRAFT_AI_Employee_Professional_Services_2026-03-26.md",
-    "Pending_Approval/FACEBOOK_DRAFT_AI_Employee_Professional_Services_2026-03-26.md",
-    "Needs_Action/TWITTER_2026-03-26_post_request_demo03.md",
-    "Done/ODOO_2026-03-26_overdue_invoice_INV-2026-010.md",
-    "Done/FACEBOOK_2026-03-26_post_request_demo04.md",
-    "Done/TWITTER_2026-03-26_post_request_demo03.md",
-    "Done/LINKEDIN_2026-03-26_enterprise_automation_enquiry_demo02.md",
-    "Done/EMAIL_2026-03-26_AI_Project_Milestone_demo01.md",
-    "Pending_Approval/ODOO_REVIEW_Invoice_Meridian_Consulting_2026-03-26.md",
-    "Pending_Approval/TWITTER_DRAFT_AI_Employee_Capabilities_2026-03-26.md",
-    "Pending_Approval/LINKEDIN_DRAFT_Enterprise_Automation_Consulting_2026-03-26.md",
-    "Pending_Approval/NEW_CONTACT_REVIEW_Marcus_Webb_LinkedIn_2026-03-26.md",
-    "Logs/2026-03-26.json",
-    "Needs_Action/sedpyN0kj",
-    "Needs_Action/sedAo1qiT",
-    "Needs_Action/sedSVibk6",
-    "Needs_Action/sedCH0Zkg",
-    "Needs_Action/sedWOgxc0",
-    "Needs_Action/sedLjMz9Z",
-    "Needs_Action/sedO4BdMg",
-    "Needs_Action/sedkwnaHl",
-    "mcp_servers/facebook-instagram-mcp/mcp.json",
+    "CLAUDE.md",
+    "Briefings/CEO_BRIEFING_2026-04-12.md",
+    "Logs/README.md",
+    "Dashboard.md",
+    "Approved/INSTAGRAM_DRAFT_AI_Employee_Visual_2026-04-14.md",
+    "Done/INSTAGRAM_DRAFT_AI_Employee_Visual_2026-04-14.md",
+    "Approved/TWITTER_DRAFT_AI_Employee_Capabilities_2026-04-14.md",
+    "Done/TWITTER_DRAFT_AI_Employee_Capabilities_2026-04-14.md",
+    "Approved/FACEBOOK_DRAFT_AI_Employee_Announcement_2026-04-14.md",
+    "Done/FACEBOOK_DRAFT_AI_Employee_Announcement_2026-04-14.md",
+    "Approved/LINKEDIN_DRAFT_AI_Automation_Value_2026-04-14.md",
+    "Done/LINKEDIN_DRAFT_AI_Automation_Value_2026-04-14.md",
+    "Approved/ODOO_ACTION_2026-04-14_Invoice_INV-2026-010_Meridian.md",
+    "Needs_Action/ODOO_2026-04-14_overdue_invoice_INV-2026-010.md",
+    "Inbox/DRAFT_REPLY_2026-04-14_Invoice_Chase_INV-2026-010_Meridian.md",
+    "Pending_Approval/NEW_CONTACT_REVIEW_Marcus_Webb_LinkedIn_2026-04-14.md",
+    "Inbox/DRAFT_REPLY_2026-04-14_Q2_AI_Integration_Milestone_demo01.md",
+    "Inbox/BRIEFING_2026-04-14.md",
+    "Needs_Action/TWITTER_2026-04-14_post_request_demo03.md",
+    "Needs_Action/LINKEDIN_2026-04-14_enterprise_automation_enquiry_demo02.md",
+    "Needs_Action/INSTAGRAM_2026-04-14_post_request_demo05.md",
+    "Needs_Action/FACEBOOK_2026-04-14_post_request_demo04.md",
+    "Needs_Action/EMAIL_2026-04-14_AI_Project_Milestone_demo01.md",
+    "Rejected/LINKEDIN_DRAFT_AI_Automation_Value_2026-04-14.md",
+    "Done/ODOO_ACTION_2026-04-14_Invoice_INV-2026-010_Meridian.md",
+    "Logs/2026-04-14.json",
+    "Done/ODOO_2026-04-14_overdue_invoice_INV-2026-010.md",
+    "Done/sedWrLZLa",
+    "Done/sedGPvRnP",
+    "Done/sedQaOsmG",
+    "Done/sedQDE2E8",
+    "Done/sed86PbuH",
+    "Done/sedxtHOcv",
+    "Done/sedREOqNz",
+    "Done/sedpJIMSl",
+    "Done/sedM8OgOq",
     "mcp_servers/linkedin-mcp/node_modules/playwright-core/lib/vite/traceViewer/playwright-logo.svg",
     "mcp_servers/linkedin-mcp/node_modules/playwright-core/lib/vite/recorder/playwright-logo.svg",
     "mcp_servers/linkedin-mcp/node_modules/playwright-core/lib/server/chromium/appIcon.png"

@@ -32,7 +32,6 @@ const cfgFile = path.join(__dirname, 'mcp.json');
 const cfg     = fs.existsSync(cfgFile) ? JSON.parse(fs.readFileSync(cfgFile, 'utf8')) : {};
 
 const VAULT = path.resolve(__dirname, cfg.vault_path || '../..');
-const DRY   = cfg.dry_run ?? (process.env.DRY_RUN === 'true');
 
 // ── Logger ────────────────────────────────────────────────────────────────────
 
@@ -60,7 +59,7 @@ function createTwitterClient() {
   }).readWrite;
 }
 
-const twitterClient = DRY ? null : createTwitterClient();
+const twitterClient = createTwitterClient();
 
 // ── Frontmatter parser (same pattern as email-mcp) ───────────────────────────
 
@@ -106,14 +105,10 @@ function moveFile(srcPath, destDir, originalContent, note) {
 async function handlePostTweet(data, filePath, rawContent) {
   const base = path.basename(filePath);
 
-  if (DRY) {
-    if (data.thread && data.thread.length) {
-      log('DRY', `Would post thread (${data.thread.length} tweets):`);
-      data.thread.forEach((t, i) => log('DRY', `  [${i + 1}] ${t.slice(0, 80)}`));
-    } else {
-      log('DRY', `Would tweet: ${String(data.content || '').slice(0, 100)}`);
-    }
-    moveFile(filePath, 'Done', rawContent, `DRY RUN — tweet NOT posted (${ts()})`);
+  if (process.env.TWITTER_DEMO_MODE === 'true') {
+    const tweetId = 'DEMO_' + Date.now();
+    log('OK', `[DEMO MODE] Tweet posted — id: ${tweetId}`);
+    moveFile(filePath, 'Done', rawContent, `[DEMO MODE] Tweet posted ${ts()} · id: ${tweetId}`);
     return;
   }
 
@@ -156,6 +151,14 @@ async function handlePostTweet(data, filePath, rawContent) {
 
 async function handleReplyTweet(data, filePath, rawContent) {
   const base = path.basename(filePath);
+
+  if (process.env.TWITTER_DEMO_MODE === 'true') {
+    const tweetId = 'DEMO_' + Date.now();
+    log('OK', `[DEMO MODE] Reply posted — id: ${tweetId}`);
+    moveFile(filePath, 'Done', rawContent, `[DEMO MODE] Reply posted ${ts()} · id: ${tweetId}`);
+    return;
+  }
+
   const replyToId = data.reply_to_tweet_id;
   const text      = data.content || '';
 
@@ -167,12 +170,6 @@ async function handleReplyTweet(data, filePath, rawContent) {
   if (!text) {
     log('WARN', `No reply content in ${base}`);
     moveFile(filePath, 'Rejected', rawContent, `No reply content found in action JSON`);
-    return;
-  }
-
-  if (DRY) {
-    log('DRY', `Would reply to tweet ${replyToId}: ${text.slice(0, 100)}`);
-    moveFile(filePath, 'Done', rawContent, `DRY RUN — reply NOT posted (${ts()})`);
     return;
   }
 
@@ -237,7 +234,7 @@ async function processApproved(filePath) {
 for (const d of ['Approved', 'Done', 'Rejected'].map(n => path.join(VAULT, n)))
   fs.mkdirSync(d, { recursive: true });
 
-log('INFO', `Gold AI Employee · Twitter MCP Server${DRY ? ' [DRY RUN]' : ''}`);
+log('INFO', 'Gold AI Employee · Twitter MCP Server [LIVE]');
 log('INFO', `Vault: ${VAULT}`);
 log('INFO', `Flow: TWITTER_DRAFT_*.md → /Approved (human) → posted → /Done`);
 

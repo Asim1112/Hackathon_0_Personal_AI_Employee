@@ -12,7 +12,6 @@
  *
  * Config: mcp.json (takes priority) → environment variables (fallback)
  * Startup: node index.js
- * Dry-run: set dry_run: true in mcp.json or DRY_RUN=true in env
  *
  * Dependencies: nodemailer, chokidar
  * Install:      npm install
@@ -36,7 +35,6 @@ const cfg     = fs.existsSync(cfgFile) ? JSON.parse(fs.readFileSync(cfgFile, 'ut
 // Pin vault path to __dirname — never read VAULT_PATH env var (may be .env placeholder)
 // Only mcp.json's vault_path field can override (explicit, trusted config).
 const VAULT = path.resolve(__dirname, cfg.vault_path || '../..');
-const DRY   = cfg.dry_run  ?? (process.env.DRY_RUN   === 'true');
 const FROM  = cfg.from     || process.env.SMTP_FROM   || cfg.smtp_user || process.env.SMTP_USER;
 const SMTP  = {
   host:   cfg.smtp_host   || process.env.SMTP_HOST   || 'smtp.gmail.com',
@@ -93,13 +91,6 @@ async function processApproved(filePath) {
 
   if (!to) { log('WARN', `No 'to' field in ${base} — moving to Rejected/`); moveFile(filePath, 'Rejected', raw, `No recipient address`); return; }
 
-  if (DRY) {
-    log('DRY', `Would send → To: ${to} | Subject: ${subject}`);
-    log('DRY', `Body: ${text.slice(0, 100).replace(/\n/g, ' ')}…`);
-    moveFile(filePath, 'Done', raw, `DRY RUN — email NOT sent (${ts()})`);
-    return;
-  }
-
   log('INFO', `Sending → To: ${to} | Subject: ${subject}`);
   try {
     const info = await nodemailer.createTransport(SMTP).sendMail({ from: FROM, to, subject, text });
@@ -130,7 +121,7 @@ if (!SMTP.auth.user || !SMTP.auth.pass) {
 for (const d of ['Approved', 'Inbox', 'Done', 'Rejected'].map(n => path.join(VAULT, n)))
   fs.mkdirSync(d, { recursive: true });
 
-log('INFO', `Silver AI Employee · Email MCP Server${DRY ? ' [DRY RUN MODE]' : ''}`);
+log('INFO', `Silver AI Employee · Email MCP Server [LIVE]`);
 log('INFO', `Vault : ${VAULT}`);
 log('INFO', `SMTP  : ${SMTP.host}:${SMTP.port} (user: ${SMTP.auth.user})`);
 log('INFO', `Flow  : /Inbox (Claude drafts) → /Approved (human approves) → sent → /Done`);

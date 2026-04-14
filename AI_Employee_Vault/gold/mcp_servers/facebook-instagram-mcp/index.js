@@ -48,7 +48,6 @@ const cfgFile = path.join(__dirname, 'mcp.json');
 const cfg     = fs.existsSync(cfgFile) ? JSON.parse(fs.readFileSync(cfgFile, 'utf8')) : {};
 
 const VAULT          = path.resolve(__dirname, cfg.vault_path || '../..');
-const DRY            = cfg.dry_run ?? (process.env.DRY_RUN === 'true');
 const GRAPH_BASE     = 'https://graph.facebook.com/v19.0';
 const PAGE_ID        = process.env.FACEBOOK_PAGE_ID        || '';
 const PAGE_TOKEN     = process.env.FACEBOOK_ACCESS_TOKEN   || '';
@@ -125,14 +124,6 @@ async function handlePostFacebook(data, filePath, rawContent) {
     return;
   }
 
-  if (DRY) {
-    log('DRY', `Would post to Facebook Page ${PAGE_ID}:`);
-    log('DRY', `  Message: ${String(data.message || '').slice(0, 100)}`);
-    if (data.link) log('DRY', `  Link: ${data.link}`);
-    moveFile(filePath, 'Done', rawContent, `DRY RUN — FB post NOT published (${ts()})`);
-    return;
-  }
-
   try {
     const body = { message: data.message || '' };
     if (data.link) body.link = data.link;
@@ -163,14 +154,6 @@ async function handlePostInstagram(data, filePath, rawContent) {
     log('WARN', `No image_url in ${base} — Instagram requires an image`);
     moveFile(filePath, 'Rejected', rawContent,
       'Instagram post rejected: image_url is required but was not provided');
-    return;
-  }
-
-  if (DRY) {
-    log('DRY', `Would post to Instagram account ${IG_ACCOUNT_ID}:`);
-    log('DRY', `  Caption: ${String(data.caption || '').slice(0, 100)}`);
-    log('DRY', `  Image:   ${data.image_url}`);
-    moveFile(filePath, 'Done', rawContent, `DRY RUN — IG post NOT published (${ts()})`);
     return;
   }
 
@@ -246,7 +229,7 @@ if (!PAGE_TOKEN) {
 for (const d of ['Approved', 'Done', 'Rejected'].map(n => path.join(VAULT, n)))
   fs.mkdirSync(d, { recursive: true });
 
-log('INFO', `Gold AI Employee · Facebook & Instagram MCP Server${DRY ? ' [DRY RUN]' : ''}`);
+log('INFO', 'Gold AI Employee · Facebook & Instagram MCP Server [LIVE]');
 log('INFO', `Vault     : ${VAULT}`);
 log('INFO', `FB Page   : ${PAGE_ID || '(not set)'}`);
 log('INFO', `IG Account: ${IG_ACCOUNT_ID || '(not set)'}`);

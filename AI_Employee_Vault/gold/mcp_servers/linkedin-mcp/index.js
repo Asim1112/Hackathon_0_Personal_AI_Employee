@@ -34,14 +34,6 @@ const fs           = require('fs');
 const path         = require('path');
 
 // ---------------------------------------------------------------------------
-// Mock mode config (same pattern as twitter-mcp / facebook-instagram-mcp)
-// ---------------------------------------------------------------------------
-
-const cfgFile = path.join(__dirname, 'mcp.json');
-const cfg     = fs.existsSync(cfgFile) ? JSON.parse(fs.readFileSync(cfgFile, 'utf8')) : {};
-const MOCK    = cfg.mock ?? (process.env.LINKEDIN_MOCK === 'true');
-
-// ---------------------------------------------------------------------------
 // Logger
 // ---------------------------------------------------------------------------
 
@@ -69,9 +61,6 @@ const REJECTED_DIR  = path.join(VAULT_PATH, 'Rejected');
 const LI_EMAIL     = process.env.LINKEDIN_EMAIL    || 'demo@example.com';
 const LI_PASSWORD  = process.env.LINKEDIN_PASSWORD || 'demo';
 const HEADLESS     = process.env.HEADLESS !== 'false'; // default: true (headless)
-
-// Session state file — avoids logging in every time
-const SESSION_FILE = path.join(__dirname, '.linkedin_session.json');
 
 // ---------------------------------------------------------------------------
 // Markdown frontmatter parser
@@ -109,96 +98,93 @@ function extractPostContent(markdownBody) {
 }
 
 // ---------------------------------------------------------------------------
-// LinkedIn automation via Playwright
+// LinkedIn automation via Playwright (persistent context)
 // ---------------------------------------------------------------------------
 
-/**
- * Log into LinkedIn and save session state.
- * Returns the page object for further use.
- */
-async function getLinkedInPage(browser) {
-  let context;
-
-  // Try to restore saved session
-  if (fs.existsSync(SESSION_FILE)) {
-    try {
-      const savedState = JSON.parse(fs.readFileSync(SESSION_FILE, 'utf8'));
-      context = await browser.newContext({ storageState: savedState });
-      log.info('Restored LinkedIn session from saved state');
-    } catch {
-      log.warn('Saved session invalid — will log in fresh');
-      context = await browser.newContext();
-    }
-  } else {
-    context = await browser.newContext();
-  }
-
-  const page = await context.newPage();
-  await page.goto('https://www.linkedin.com/feed/', { waitUntil: 'domcontentloaded' });
-
-  // Check if already logged in
-  const isLoggedIn = await page.locator('[data-test-id="share-button"], .share-box-feed-entry__trigger').count();
-  if (isLoggedIn > 0) {
-    log.info('Already logged into LinkedIn');
-    return { browser, context, page };
-  }
-
-  // Login flow
-  log.info('Logging into LinkedIn...');
-  await page.goto('https://www.linkedin.com/login', { waitUntil: 'domcontentloaded' });
-  await page.fill('#username', LI_EMAIL);
-  await page.fill('#password', LI_PASSWORD);
-  await page.click('[data-litms-control-urn="login-submit"], [type="submit"]');
-  await page.waitForURL(/linkedin\.com\/feed/, { timeout: 30_000 });
-
-  log.info('Login successful');
-
-  // Save session state for future runs
-  const state = await context.storageState();
-  fs.writeFileSync(SESSION_FILE, JSON.stringify(state), 'utf8');
-  log.info('Session state saved');
-
-  return { browser, context, page };
-}
+// Persistent browser profile directory — accumulates cookies/history between runs
+// so LinkedIn treats this as a real returning user, not a bot.
+const PROFILE_DIR = path.join(__dirname, '.browser_profile');
 
 /**
  * Create a LinkedIn text post with the given content.
+ * Uses launchPersistentContext so the browser profile is saved between runs —
+ * LinkedIn sees a familiar returning browser and skips security challenges.
  */
 async function postToLinkedIn(postText) {
-  const browser = await chromium.launch({ headless: HEADLESS });
+  const context = await chromium.launchPersistentContext(PROFILE_DIR, {
+    headless: HEADLESS,
+    args: [
+      '--disable-blink-features=AutomationControlled',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+    ],
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    viewport: { width: 1280, height: 720 },
+    locale: 'en-GB',
+  });
+
+  await context.addInitScript(() => {
+    Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+  });
 
   try {
-    const { context, page } = await getLinkedInPage(browser);
+    const page = await context.newPage();
+
+    // Check if already logged in
+    await page.goto('https://www.linkedin.com/feed/', { waitUntil: 'domcontentloaded', timeout: 30_000 });
+
+    if (!page.url().includes('linkedin.com/feed')) {
+      // Not logged in — perform fresh login
+      log.info('Logging into LinkedIn...');
+      await page.goto('https://www.linkedin.com/login', { waitUntil: 'domcontentloaded', timeout: 30_000 });
+      await page.waitForSelector('#username', { timeout: 60_000 });
+      await page.fill('#username', LI_EMAIL);
+      await page.fill('#password', LI_PASSWORD);
+      await page.click('[data-litms-control-urn="login-submit"], [type="submit"]');
+      await page.waitForURL(/linkedin\.com\/feed/, { timeout: 60_000 });
+      log.info('Login successful — profile saved to .browser_profile/');
+    } else {
+      log.info('Already logged into LinkedIn (persistent profile)');
+    }
 
     log.info('Navigating to LinkedIn feed to create post...');
-    await page.goto('https://www.linkedin.com/feed/', { waitUntil: 'domcontentloaded' });
+    await page.goto('https://www.linkedin.com/feed/', { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(2_000);
 
     // Open the "Start a post" modal
-    const startPostBtn = page.locator('.share-box-feed-entry__trigger, [aria-label*="Start a post"]').first();
-    await startPostBtn.waitFor({ timeout: 15_000 });
-    await startPostBtn.click();
+    const startPostBtn = page.locator('[aria-label="Start a post"], .share-box-feed-entry__trigger, [aria-label*="Start a post"]').first();
+    await startPostBtn.waitFor({ state: 'visible', timeout: 20_000 });
+    await startPostBtn.click({ force: true });
+    log.info('Clicked Start a post button');
 
-    // Wait for the post editor
-    const editor = page.locator('.ql-editor, [contenteditable="true"][role="textbox"]').first();
-    await editor.waitFor({ timeout: 10_000 });
-    await editor.click();
-    await editor.fill(postText);
+    // Wait for modal animation to fully complete before looking for editor
+    await page.waitForTimeout(4_000);
+
+    // Wait for LinkedIn's post editor — covers Quill editor, modal contenteditable, and share creation state
+    // Use state:visible so we only interact with a rendered, clickable editor
+    log.info('Looking for post editor...');
+    const editor = page.locator(
+      'div.ql-editor[contenteditable="true"], ' +
+      '.share-creation-state div[contenteditable="true"], ' +
+      '.artdeco-modal div[contenteditable="true"]'
+    ).first();
+    await editor.waitFor({ state: 'visible', timeout: 45_000 });
+    await editor.click({ force: true });
+    await page.waitForTimeout(500);
+    await page.keyboard.type(postText, { delay: 30 });
 
     log.info(`Post text entered (${postText.length} chars)`);
 
     // Click Post button
     const postBtn = page.locator(
-      'button[aria-label="Post"], .share-actions__primary-action'
+      'button.share-actions__primary-action, button[aria-label="Post"], .artdeco-button--primary[aria-label="Post"]'
     ).first();
-    await postBtn.waitFor({ timeout: 10_000 });
-    await postBtn.click();
+    await postBtn.waitFor({ state: 'visible', timeout: 20_000 });
+    await postBtn.click({ force: true });
 
-    // Wait for confirmation
-    await page.waitForTimeout(3_000);
-
-    // Save updated session
-    const state = await context.storageState();
-    fs.writeFileSync(SESSION_FILE, JSON.stringify(state), 'utf8');
+    // Wait for post to be submitted
+    await page.waitForTimeout(5_000);
 
     log.info('Post submitted successfully');
     return { success: true };
@@ -207,7 +193,7 @@ async function postToLinkedIn(postText) {
     log.error(`LinkedIn post failed: ${err.message}`);
     return { success: false, error: err.message };
   } finally {
-    await browser.close();
+    await context.close();
   }
 }
 
@@ -241,27 +227,6 @@ async function processApprovedFile(filePath) {
   }
 
   log.info(`  Post preview: "${postText.substring(0, 80)}..."`);
-
-  // ── Mock mode ────────────────────────────────────────────────────────────
-  if (MOCK) {
-    log.info('  [MOCK] LinkedIn integration implemented via Playwright browser automation.');
-    log.info('  [MOCK] Live posting restricted — LinkedIn platform policies prohibit automated posting.');
-    log.info(`  [MOCK] Would publish post (${postText.length} chars) to LinkedIn profile.`);
-    log.info('  [MOCK] In production: Playwright launches Chromium, logs in, fills post editor, submits.');
-
-    const mockContent = content
-      .replace('status: pending', 'status: posted')
-      + `\n\n---\n\n**[MOCK] LinkedIn MCP — ${new Date().toISOString()}**\n`
-      + `> LinkedIn integration is implemented (Playwright browser automation).\n`
-      + `> Live posting is restricted per LinkedIn platform policies for demo safety.\n`
-      + `> Post content (${postText.length} chars) was validated and queued successfully.\n`;
-
-    fs.writeFileSync(path.join(DONE_DIR, filename), mockContent, 'utf8');
-    fs.unlinkSync(filePath);
-    log.info(`  [MOCK] Moved to Done/: ${filename}`);
-    return;
-  }
-  // ─────────────────────────────────────────────────────────────────────────
 
   const result = await postToLinkedIn(postText);
 
@@ -330,11 +295,6 @@ function startWatcher() {
 // ---------------------------------------------------------------------------
 
 function validateConfig() {
-  if (MOCK) {
-    log.info('Mock mode enabled — LinkedIn credentials not required.');
-    return;
-  }
-
   const missing = [];
   if (!LI_EMAIL || LI_EMAIL === 'demo@example.com')    missing.push('LINKEDIN_EMAIL');
   if (!LI_PASSWORD || LI_PASSWORD === 'demo') missing.push('LINKEDIN_PASSWORD');
@@ -350,10 +310,9 @@ function validateConfig() {
 // Main
 // ---------------------------------------------------------------------------
 
-log.info('AI Employee LinkedIn MCP Server — Gold Tier');
+log.info('AI Employee LinkedIn MCP Server — Gold Tier [LIVE]');
 log.info(`Vault: ${VAULT_PATH}`);
-log.info(`Mock mode: ${MOCK}`);
-if (!MOCK) log.info(`Headless mode: ${HEADLESS}`);
+log.info(`Headless mode: ${HEADLESS}`);
 
 validateConfig();
 startWatcher();

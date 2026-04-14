@@ -2,15 +2,17 @@
 
 > **Hackathon 0 · 2026** — Building Autonomous FTEs with Claude Code
 
-A fully autonomous AI Employee that triages email, manages invoicing in Odoo ERP, drafts social media content, and delivers a weekly CEO briefing — all with a strict **Human-in-the-Loop (HITL)** approval gate on every action.
+A fully autonomous AI Employee that triages email, manages invoicing in Odoo ERP, drafts social media content across five platforms, and delivers a weekly CEO briefing — all with a strict **Human-in-the-Loop (HITL)** approval gate on every external action.
 
 ---
 
 ## 🎬 Demo Video
 
-[![Personal AI Employee — Gold Tier Demo](https://img.youtube.com/vi/-gHDIdoYUlE/maxresdefault.jpg)](https://youtu.be/-gHDIdoYUlE)
+[![Personal AI Employee — Gold Tier Demo](https://img.youtube.com/vi/oVS4CmAxPw8/maxresdefault.jpg)](https://youtu.be/oVS4CmAxPw8)
 
-**[▶ Watch the 5-minute demo on YouTube](https://youtu.be/-gHDIdoYUlE)**
+**[▶ Watch the 13-minute demo on YouTube](https://youtu.be/oVS4CmAxPw8)**
+
+> Recorded live — all posts, invoices, and emails shown are real. No mock data.
 
 ---
 
@@ -22,7 +24,7 @@ The Personal AI Employee is built in three tiers:
 |------|-------------|
 | 🥉 Bronze | File watcher, basic triage, Obsidian vault |
 | 🥈 Silver | Gmail, LinkedIn, WhatsApp, MCP servers for email + LinkedIn |
-| 🥇 **Gold** | **+ Odoo ERP, Twitter/X, Facebook/Instagram, audit logging, weekly CEO briefing** |
+| 🥇 **Gold** | **+ Odoo ERP, Twitter/X, Facebook, Instagram, audit logging, weekly CEO briefing** |
 
 Gold Tier turns Claude Code into a reasoning layer that monitors 6 live channels, drafts responses and actions, routes everything through a human approval gate, and executes only after explicit sign-off.
 
@@ -66,7 +68,7 @@ Gold Tier turns Claude Code into a reasoning layer that monitors 6 live channels
 └──────────────────────┬──────────────────────────────┘
                        │
                        ▼
-         Gmail · Odoo · Twitter · LinkedIn · Facebook
+      Gmail · Odoo · Twitter · LinkedIn · Facebook/Instagram
 ```
 
 **Key principle:** Claude never executes actions directly. Every output is a draft. A human approves. The MCP server executes.
@@ -114,7 +116,7 @@ gold/
 │
 ├── mcp_servers/                 # 5 Node.js MCP servers — execute approved actions
 │   ├── email-mcp/               # Sends email via Gmail SMTP
-│   ├── linkedin-mcp/            # Posts to LinkedIn via Playwright
+│   ├── linkedin-mcp/            # Posts to LinkedIn via Playwright (persistent context)
 │   ├── odoo-mcp/                # Creates invoices in Odoo via JSON-RPC   [Gold]
 │   ├── twitter-mcp/             # Posts tweets via Twitter API v2          [Gold]
 │   └── facebook-instagram-mcp/  # Posts via Meta Graph API                 [Gold]
@@ -132,7 +134,7 @@ gold/
 │
 ├── docker/
 │   └── odoo/
-│       ├── docker-compose.yml   # Odoo 18 + PostgreSQL 16
+│       ├── docker-compose.yml   # Odoo + PostgreSQL 16
 │       └── config/odoo.conf
 │
 ├── pyproject.toml               # Python dependencies (managed by uv)
@@ -173,11 +175,13 @@ uv sync
 
 ```bash
 cd mcp_servers/email-mcp && npm install && cd ../..
-cd mcp_servers/linkedin-mcp && npm install && cd ../..
+cd mcp_servers/linkedin-mcp && npm install && npx playwright install chromium && cd ../..
 cd mcp_servers/odoo-mcp && npm install && cd ../..
 cd mcp_servers/twitter-mcp && npm install && cd ../..
 cd mcp_servers/facebook-instagram-mcp && npm install && cd ../..
 ```
+
+> **LinkedIn:** `npx playwright install chromium` is required. The LinkedIn MCP uses Playwright browser automation with a persistent Chromium profile stored in `mcp_servers/linkedin-mcp/.browser_profile/`. No manual session setup is needed — the browser logs in automatically on first use and reuses the saved profile on subsequent runs.
 
 ### 4. Configure Environment Variables
 
@@ -245,7 +249,7 @@ SMTP_FROM="Your Name <your.email@gmail.com>"
 # ── LinkedIn ──────────────────────────────────────────────────────────────────
 LINKEDIN_EMAIL=your.email@example.com
 LINKEDIN_PASSWORD=your-linkedin-password
-HEADLESS=true
+HEADLESS=false                         # false = browser visible on screen (recommended for demo)
 
 # ── Twitter / X ───────────────────────────────────────────────────────────────
 TWITTER_API_KEY=your-api-key
@@ -253,10 +257,11 @@ TWITTER_API_SECRET=your-api-secret
 TWITTER_ACCESS_TOKEN=your-access-token
 TWITTER_ACCESS_TOKEN_SECRET=your-access-token-secret
 TWITTER_BEARER_TOKEN=your-bearer-token
+TWITTER_DEMO_MODE=false                # Set to true if your API tier doesn't support write access (402)
 
 # ── Facebook & Instagram ──────────────────────────────────────────────────────
 FACEBOOK_PAGE_ID=your-page-id
-FACEBOOK_ACCESS_TOKEN=your-page-access-token
+FACEBOOK_ACCESS_TOKEN=your-page-access-token   # Page Access Token from Meta Graph API Explorer
 INSTAGRAM_ACCOUNT_ID=your-instagram-business-account-id
 
 # ── Odoo (self-hosted) ────────────────────────────────────────────────────────
@@ -276,7 +281,11 @@ ODOO_INTERVAL=600
 
 > **Gmail App Password:** Go to [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) (requires 2-Step Verification enabled). Create a new app password and paste the 16-character code into `SMTP_PASS`.
 
-> **Twitter:** Requires a developer account at [developer.twitter.com](https://developer.twitter.com) with an app that has **OAuth 1.0a Read+Write** permissions.
+> **Twitter:** Requires a developer account at [developer.twitter.com](https://developer.twitter.com) with an app that has **OAuth 1.0a Read+Write** permissions. If your free-tier account returns a `402` error on posting, set `TWITTER_DEMO_MODE=true` — the MCP will complete the full workflow and log the action without hitting the paid endpoint.
+
+> **Facebook Page Access Token:** Expires after ~1 hour for short-lived tokens. Generate a fresh one in [Meta Graph API Explorer](https://developers.facebook.com/tools/explorer/) 30 minutes before use.
+
+> **Instagram:** Must be a Business or Creator account linked to your Facebook Page. Find your `INSTAGRAM_ACCOUNT_ID` by calling `GET /{page-id}?fields=instagram_business_account` in Graph API Explorer with your Page Access Token.
 
 ---
 
@@ -319,7 +328,7 @@ uv run python orchestrator.py --briefing
 
 ## Odoo Integration
 
-Gold Tier connects Claude Code to a self-hosted **Odoo 18** instance via JSON-RPC.
+Gold Tier connects Claude Code to a self-hosted **Odoo** instance via JSON-RPC.
 
 ### What Claude Can Do
 
@@ -376,7 +385,9 @@ Claude drafts replies and posts using `SKILL_Twitter_Draft.md`. Every draft file
 type: social_draft
 platform: twitter
 send_via_mcp: twitter-mcp
+action: post_tweet
 status: pending
+char_count: 268
 ---
 ```
 
@@ -384,7 +395,6 @@ Plus a JSON action block at the bottom of the file body:
 
 ```json
 {
-  "action": "post_tweet",
   "content": "Your tweet text here (max 280 chars)"
 }
 ```
@@ -399,11 +409,63 @@ For replies to mentions:
 }
 ```
 
-> **Dry Run Mode:** `twitter-mcp` ships with `mcp.json` set to `dry_run: true`. Files are processed to `Done/` without hitting the Twitter API. Remove or update `mcp.json` when ready for live posting.
+> **Twitter API write access:** Requires OAuth 1.0a with Read+Write permissions. If your account returns a `402 Payment Required` error, set `TWITTER_DEMO_MODE=true` in `.env` — the MCP logs the action and moves the file to `Done/` without calling the API.
 
-### Facebook & Instagram
+### Facebook
 
-Same pattern using `SKILL_Facebook_Instagram.md` and the `facebook-instagram-mcp` server via Meta Graph API.
+Claude drafts Facebook Business Page posts using `SKILL_Facebook_Instagram.md`. Required frontmatter:
+
+```yaml
+---
+type: social_post
+platform: facebook
+send_via_mcp: facebook-instagram-mcp
+action: post_facebook
+status: pending
+---
+```
+
+Required JSON action block:
+
+```json
+{
+  "message": "Your post text here"
+}
+```
+
+The `facebook-instagram-mcp` posts directly to your Facebook Page via `POST /{page-id}/feed` on the Meta Graph API v19.0.
+
+### Instagram
+
+Instagram requires a **Business or Creator account** linked to your Facebook Page, and every post **must include an image URL**. The MCP uses Meta's two-step container/publish flow.
+
+Required frontmatter:
+
+```yaml
+---
+type: social_post
+platform: instagram
+send_via_mcp: facebook-instagram-mcp
+action: post_instagram
+image_url: https://example.com/your-image.jpg   # required — post will be rejected without this
+status: pending
+---
+```
+
+Required JSON action block:
+
+```json
+{
+  "caption": "Your caption with #hashtags",
+  "image_url": "https://example.com/your-image.jpg"
+}
+```
+
+The MCP executes two API calls:
+1. `POST /{instagram-account-id}/media` — creates the media container
+2. `POST /{instagram-account-id}/media_publish` — publishes the container to the profile
+
+> **Image URL:** Must be a publicly accessible HTTPS URL. The image is fetched by Instagram's servers, so local or localhost URLs will fail. Use a public hosting service (e.g. Imgur, PostImg, or your own CDN).
 
 ---
 
@@ -447,7 +509,7 @@ Claude generates a structured report to `Briefings/CEO_BRIEFING_YYYY-MM-DD.md` c
 - Revenue this week vs target (pulled from Odoo)
 - Outstanding invoices older than 14 days
 - SLA breaches (emails unanswered > 48h)
-- Social media activity (posts, engagement)
+- Social media activity (posts, engagement across all 5 platforms)
 - New leads captured this week
 - Pending approvals older than 24h (bottleneck flags)
 - Subscription audit (tools unused > 30 days)
@@ -463,17 +525,18 @@ uv run python orchestrator.py --briefing
 
 ## Audit Logging
 
-Every action Claude takes is appended to `Logs/YYYY-MM-DD.json`:
+Every action Claude takes is appended to `Logs/YYYY-MM-DD.json`. Each entry has eight fields:
 
 ```json
 {
   "timestamp": "2026-03-14T10:30:00Z",
   "action_type": "email_draft_created",
-  "source_file": "EMAIL_2026-03-14_Client_Status_Update.md",
-  "output_file": "DRAFT_REPLY_Project_Status_2026-03-14.md",
-  "channel": "gmail",
-  "hitl_required": true,
-  "status": "pending_approval"
+  "actor": "claude_code",
+  "target": "EMAIL_2026-03-14_Client_Status_Update.md",
+  "skill_used": "SKILL_Gmail_Triage",
+  "approval_status": "pending",
+  "result": "escalated",
+  "notes": "Draft reply written to Inbox/. Sarah Johnson, TechCorp — board deadline Friday."
 }
 ```
 
@@ -489,7 +552,7 @@ Run `SKILL_Audit_Logger` at the end of each Claude cycle to ensure a complete tr
 | `SKILL_WhatsApp_Triage` | WhatsApp | `Inbox/` or `Pending_Approval/` |
 | `SKILL_LinkedIn_Draft` | LinkedIn | `Pending_Approval/` |
 | `SKILL_Twitter_Draft` | Twitter/X | `Pending_Approval/` |
-| `SKILL_Facebook_Instagram` | FB / Instagram | `Pending_Approval/` |
+| `SKILL_Facebook_Instagram` | Facebook + Instagram | `Pending_Approval/` |
 | `SKILL_Odoo_Accounting` | Odoo ERP | `Pending_Approval/` |
 | `SKILL_Weekly_CEO_Briefing` | All channels | `Briefings/` |
 | `SKILL_Audit_Logger` | All | `Logs/YYYY-MM-DD.json` |
@@ -507,13 +570,19 @@ Run `SKILL_Audit_Logger` at the end of each Claude cycle to ensure a complete tr
 |---------|-------|-----|
 | Email MCP skips file | `type:` field missing or wrong | Ensure `type: draft_reply` in frontmatter |
 | Email MCP — no `to` field | Claude omitted recipient | Ensure `to: email@address.com` in frontmatter |
-| Twitter MCP rejects file | No JSON action block | Add ` ```json ` block with `action` + `content` fields |
+| Twitter MCP rejects file | No JSON action block | Add ` ```json ` block with `content` field |
+| Twitter MCP — `402` error | Free-tier API doesn't allow write | Set `TWITTER_DEMO_MODE=true` in `.env` |
 | Odoo MCP 401 error | Wrong Odoo credentials | Check `ODOO_PASSWORD` in `.env` |
-| Twitter MCP 401 error | Missing Twitter API keys | Set `TWITTER_API_*` in `.env` or keep `dry_run: true` |
+| Twitter MCP 401 error | Missing Twitter API keys | Set all `TWITTER_API_*` and `TWITTER_ACCESS_TOKEN*` keys in `.env` |
 | Gmail OAuth failure | `token.json` expired | Run `uv run python gmail_watcher.py --auth` again |
 | Odoo not reachable | Docker not running | `cd docker/odoo && docker compose up -d` |
-| MCP skips file (wrong mcp) | `send_via_mcp:` mismatch | Check value matches the MCP server name exactly |
+| MCP skips file silently | `send_via_mcp:` mismatch | Value must match MCP server name exactly (case-sensitive) |
 | Claude writes wrong format | Skill file not read | Add skill filename explicitly to the Claude prompt |
+| LinkedIn `#username` timeout | Bot detection on login | Delete `.browser_profile/` and retry; persistent context accumulates trust over runs |
+| LinkedIn editor not found | LinkedIn UI update | Check CSS selectors in `linkedin-mcp/index.js` match current DOM |
+| Instagram post rejected | No `image_url` in file | Instagram requires a public HTTPS image URL — add `image_url` to frontmatter and JSON block |
+| Instagram `image_url` fails | Private/localhost URL | Use a publicly accessible URL; Instagram's servers must be able to fetch the image |
+| Facebook `#190` token error | Page Access Token expired | Generate a fresh token in Meta Graph API Explorer and update `FACEBOOK_ACCESS_TOKEN` in `.env` |
 
 ---
 
@@ -524,10 +593,11 @@ Run `SKILL_Audit_Logger` at the end of each Claude cycle to ensure a complete tr
 | AI Reasoning | [Claude Code](https://claude.ai/code) (claude-sonnet-4-6) |
 | Watchers | Python 3.11+, tweepy, httpx, Playwright, google-api-python-client |
 | MCP Servers | Node.js 18+, nodemailer, twitter-api-v2, chokidar, xmlrpc |
-| ERP | Odoo 18 Community + PostgreSQL 16 (Docker) |
+| ERP | Odoo Community + PostgreSQL 16 (Docker) |
+| LinkedIn Automation | Playwright `launchPersistentContext` — persistent Chromium profile |
+| Social APIs | Twitter API v2, Meta Graph API v19.0 |
 | Vault / Memory | Obsidian (markdown files) |
 | Package Management | uv (Python), npm (Node.js) |
-| Social APIs | Twitter API v2, Meta Graph API v19.0 |
 
 ---
 

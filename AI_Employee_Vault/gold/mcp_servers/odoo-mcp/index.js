@@ -32,7 +32,6 @@
  *
  * Config: vault-root .env  (two levels up: mcp_servers/odoo-mcp/ → gold/)
  * Startup: node index.js
- * Dry-run: DRY_RUN=true node index.js
  *
  * Dependencies: chokidar, dotenv, winston  (+ odoo-client.js local)
  * Install:      npm install
@@ -69,8 +68,6 @@ const APPROVED    = path.join(VAULT, 'Approved');
 const DONE        = path.join(VAULT, 'Done');
 const REJECTED    = path.join(VAULT, 'Rejected');
 const ACCOUNTING  = path.join(VAULT, 'Accounting');
-
-const DRY_RUN     = process.env.DRY_RUN === 'true';
 
 const odoo = new OdooClient({
   url:      process.env.ODOO_URL      || 'http://localhost:8069',
@@ -139,12 +136,6 @@ async function handleCreateInvoice(data, filePath, rawContent) {
   log.info(`  Lines    : ${lines.length} line(s)`);
   lines.forEach((l, i) => log.info(`    [${i + 1}] ${l.name} × ${l.quantity || 1} @ ${l.price_unit}`));
 
-  if (DRY_RUN) {
-    log.info('  [DRY RUN] Would create invoice in Odoo — skipping API call');
-    moveFile(filePath, DONE, rawContent, 'DRY RUN — invoice NOT created');
-    return;
-  }
-
   const invoiceId = await odoo.createInvoiceDraft({
     partnerName:    partner_name,
     partnerEmail:   partner_email,
@@ -178,12 +169,6 @@ async function handleConfirmInvoice(data, filePath, rawContent) {
 
   log.info(`  Invoice ID : ${invoice_id}`);
 
-  if (DRY_RUN) {
-    log.info('  [DRY RUN] Would confirm/post invoice in Odoo — skipping API call');
-    moveFile(filePath, DONE, rawContent, `DRY RUN — invoice ID ${invoice_id} NOT posted`);
-    return;
-  }
-
   await odoo.confirmInvoice(invoice_id);
   const odooLink = `${process.env.ODOO_URL || 'http://localhost:8069'}/web#model=account.move&id=${invoice_id}`;
   log.info(`  ✅ Invoice ID ${invoice_id} confirmed (state: posted)`);
@@ -202,12 +187,6 @@ async function handleSyncAccounting(data, filePath, rawContent) {
   const month = now.getMonth() + 1;
 
   log.info(`  Syncing Odoo data for ${year}-${String(month).padStart(2, '0')}…`);
-
-  if (DRY_RUN) {
-    log.info('  [DRY RUN] Would sync Odoo accounting data — skipping');
-    moveFile(filePath, DONE, rawContent, 'DRY RUN — accounting sync skipped');
-    return;
-  }
 
   const summary  = await odoo.getMonthlySummary(year, month);
   const overdue  = await odoo.getOverdueInvoices();
@@ -351,7 +330,7 @@ async function startup() {
   }
 
   log.info('──────────────────────────────────────────────');
-  log.info('Gold AI Employee · Odoo MCP Server' + (DRY_RUN ? ' [DRY RUN]' : ''));
+  log.info('Gold AI Employee · Odoo MCP Server [LIVE]');
   log.info(`Vault   : ${VAULT}`);
   log.info(`Odoo    : ${process.env.ODOO_URL || 'http://localhost:8069'} / db: ${odoo.db}`);
   log.info('Actions : create_invoice | confirm_invoice | sync_accounting');
