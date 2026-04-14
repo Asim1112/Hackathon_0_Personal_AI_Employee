@@ -6,6 +6,16 @@
 
 ---
 
+## 🎬 Demo Video
+
+[![Personal AI Employee — Platinum Tier Demo](https://img.youtube.com/vi/zbbXhm249k0/maxresdefault.jpg)](https://youtu.be/zbbXhm249k0)
+
+**[▶ Watch the full Platinum Tier demo on YouTube](https://youtu.be/zbbXhm249k0)**
+
+> Recorded live — Cloud Agent on AWS EC2 + Local Agent on Windows. Full two-agent pipeline demonstrated end-to-end.
+
+---
+
 ## Architecture Overview
 
 Platinum introduces a **two-agent split**: a always-on Cloud Agent (AWS EC2) handles triage and drafting; a Local Agent (Windows) handles approvals and execution via MCP servers.
