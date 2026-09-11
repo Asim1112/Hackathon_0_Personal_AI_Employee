@@ -1,19 +1,19 @@
 ---
 agent: cloud_agent
-last_check: 2026-09-11T13:23:49.928294+00:00
+last_check: 2026-09-11T13:38:57.736971+00:00
 pm2_status: online
 pm2_restarts: 0
-disk_free_mb: 5882
+disk_free_mb: 5864
 odoo_status: healthy
 overall: healthy
 ---
 
-# Cloud Agent Health — 2026-09-11T13:23:49.928294+00:00
+# Cloud Agent Health — 2026-09-11T13:38:57.736971+00:00
 
 | Check | Status |
 |---|---|
 | PM2 cloud-agent | ✅ online (restarts: 0) |
-| Disk free | ✅ 5882 MB free of 18770 MB |
+| Disk free | ✅ 5864 MB free of 18770 MB |
 | Odoo Community | ✅ healthy |
 
 *Updated every 5 min by health_monitor.py*
